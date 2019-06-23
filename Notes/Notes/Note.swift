@@ -8,10 +8,10 @@
 
 import UIKit
 
-enum ImportancyType {
+enum ImportancyType: String {
     case important
     case unimportant
-    case ordinary
+    case normal
 }
 
 struct Note {
@@ -20,31 +20,16 @@ struct Note {
     let color: UIColor
     let uid: String
     let importance: ImportancyType
-    let selfDeleteDate: Date?
+    let selfDestructDate: Date?
     
     
-    init(title: String, content: String, color: UIColor?, uuid: String?, importance: ImportancyType, selfDeleteDate: Date?) {
+    init(uid: String = UUID().uuidString, title: String, content: String, color: UIColor = UIColor.white, importance: ImportancyType, destructDate: Date? = nil) {
         self.title = title
+		self.color = color
+		self.uid = uid
         self.content = content
-        
-        if let _color = color {
-            self.color = _color
-        } else {
-            self.color = UIColor.white
-        }
-        
-        if let _uuid = uuid {
-            self.uid = _uuid
-        } else {
-            self.uid = UUID().uuidString
-        }
-        
         self.importance = importance
-        self.selfDeleteDate = selfDeleteDate
+        self.selfDestructDate = destructDate
     }
-    
-    init(title: String, content: String, importance: ImportancyType) {
-        self.init(title: title, content: content, color: nil, uuid: nil, importance: importance, selfDeleteDate: nil)
-    }
-    
+	
 }
