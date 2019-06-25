@@ -2,34 +2,85 @@
 //  NotesTests.swift
 //  NotesTests
 //
-//  Created by Babette Alvyn sharp on 23/06/2019.
+//  Created by Dima on 25/06/2019.
 //  Copyright © 2019 Babette Alvyn sharp. All rights reserved.
 //
 
 import XCTest
+@testable import Notes
 
-class NotesTests: XCTestCase {
+class NoteTests: XCTestCase {
+    
+    private let uid = "123"
+    private let title = "title"
+    private let content = "text"
+    private let importance = ImportancyType.normal
+    private var sut: Note!
     
     override func setUp() {
         super.setUp()
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+        sut = Note(title: title, content: content, importance: importance)
     }
     
     override func tearDown() {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
+        sut = nil
         super.tearDown()
     }
     
-    func testExample() {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
+    func testNote_isStruct() {
+        guard let note = sut, let displayStyle = Mirror(reflecting: note).displayStyle else {
+            XCTFail()
+            return
+        }
+        
+        XCTAssertEqual(displayStyle, .struct)
     }
     
-    func testPerformanceExample() {
-        // This is an example of a performance test case.
-        self.measure {
-            // Put the code you want to measure the time of here.
-        }
+    func testNote_whenInitialized_isSetUid() {
+        let note = Note(uid: uid, title: title, content: content, importance: importance)
+        
+        XCTAssertEqual(uid, note.uid)
+    }
+    
+    func testNote_whenInitialized_isSetDefaultUid() {
+        let note = Note(title: title, content: content, importance: importance)
+        
+        XCTAssertNotEqual(sut.uid, note.uid)
+    }
+    
+    func testNote_whenInitialized_setTitle() {
+        XCTAssertEqual(sut.title, title)
+    }
+    
+    func testNote_whenInitialized_setContent() {
+        XCTAssertEqual(sut.content, content)
+    }
+    
+    func testNote_whenInitialized_setImportance() {
+        XCTAssertEqual(sut.importance, importance)
+    }
+    
+    
+    func testNote_whenInitialized_defaultColor() {
+        XCTAssertEqual(sut.color, .white)
+    }
+    
+    func testNote_whenInitialized_customColor() {
+        let color = UIColor.red
+        let note = Note(title: title, content: content, color: color, importance: importance)
+        
+        XCTAssertEqual(note.color, color)
+    }
+    
+    func testNote_whenInitialized_defaultDate() {
+        XCTAssertNil(sut.selfDestructDate)
+    }
+    
+    func testNote_whenInitialized_customDate() {
+        let date = Date()
+        let note = Note(title: title, content: content, importance: importance, destructDate: date)
+        
+        XCTAssertEqual(date, note.selfDestructDate)
     }
     
 }
