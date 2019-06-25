@@ -66,14 +66,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		3275049B22C2BFD400ED2C10 /* Model */ = {
+		3275049C22C2C0E700ED2C10 /* Model */ = {
 			isa = PBXGroup;
 			children = (
 				6B52071422BFD80E00FE6F38 /* Note.swift */,
 				6B52071622BFD95000FE6F38 /* NoteExtension.swift */,
 				3275047322C15C8400ED2C10 /* FileNotebook.swift */,
 			);
-			name = Model;
+			path = Model;
 			sourceTree = "<group>";
 		};
 		6B5206F622BFD7D900FE6F38 = {
@@ -97,7 +97,7 @@
 		6B52070122BFD7D900FE6F38 /* Notes */ = {
 			isa = PBXGroup;
 			children = (
-				3275049B22C2BFD400ED2C10 /* Model */,
+				3275049C22C2C0E700ED2C10 /* Model */,
 				6B52070222BFD7D900FE6F38 /* AppDelegate.swift */,
 				6B52070422BFD7D900FE6F38 /* ViewController.swift */,
 				6B52070622BFD7D900FE6F38 /* Main.storyboard */,
