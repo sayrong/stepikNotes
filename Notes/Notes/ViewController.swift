@@ -13,6 +13,15 @@ class ViewController: UIViewController {
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		// Do any additional setup after loading the view, typically from a nib.
+        
+        #if TESTQA
+            let welcomeMessage = UILabel(frame: CGRect(x: 5, y: 50, width: 200, height: 21))
+            welcomeMessage.textColor = .black
+            welcomeMessage.text = "Welcome to test version"
+            welcomeMessage.textAlignment = .center
+            super.view.addSubview(welcomeMessage)
+        #endif
+        
 	}
 
 	override func didReceiveMemoryWarning() {
