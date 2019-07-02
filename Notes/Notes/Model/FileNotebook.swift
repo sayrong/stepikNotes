@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import CocoaLumberjack
 
 class FileNotebook {
     
@@ -43,7 +44,7 @@ class FileNotebook {
         do {
             data = try JSONSerialization.data(withJSONObject: result, options: .prettyPrinted)
         } catch {
-            print(error)
+            DDLogError(error.localizedDescription)
         }
         return data
     }
@@ -51,7 +52,7 @@ class FileNotebook {
     public func saveToFile() {
         var result = false
         guard let path = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first else {
-            print("Error get cache dir")
+            DDLogError("Error get cache dir")
             return
         }
         let notesDir = path.appendingPathComponent(filename)
@@ -59,9 +60,9 @@ class FileNotebook {
             result = FileManager.default.createFile(atPath: notesDir.path, contents: data, attributes: nil)
         }
         if result == false {
-            print("Some error while creating file")
+            DDLogError("Some error while creating file")
         } else {
-            print("File saved")
+            DDLogInfo("File \(notesDir.path) saved")
         }
         
     }
@@ -73,10 +74,10 @@ class FileNotebook {
             if let arrayJson = file as? [[String:Any]] {
                 return arrayJson
             } else {
-                print("Cast error")
+                DDLogError("Cast error")
             }
         } catch {
-            print(error)
+            DDLogError(error.localizedDescription)
         }
         return nil
     }
@@ -84,7 +85,7 @@ class FileNotebook {
     public func loadFromFile() {
         
         guard let path = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first else {
-            print("Error get cache dir")
+            DDLogError("Error get cache dir")
             return
         }
         let notesDir = path.appendingPathComponent(filename)
@@ -98,7 +99,7 @@ class FileNotebook {
                 }
             }
         } else {
-            print("File not found")
+            DDLogError("File \(notesDir.path) not found")
         }
         
     }

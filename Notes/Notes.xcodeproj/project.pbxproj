@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		2C65664B22CB57F2000ADC1C /* MyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C65664A22CB57F2000ADC1C /* MyTests.swift */; };
+		3234E80FB5FA6A53B5E1AB19 /* libPods-Notes.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 913E29E430946677250BB24A /* libPods-Notes.a */; };
 		3275047422C15C8400ED2C10 /* FileNotebook.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3275047322C15C8400ED2C10 /* FileNotebook.swift */; };
 		3275049722C2BD5400ED2C10 /* NotesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3275049322C2BC6400ED2C10 /* NotesTests.swift */; };
 		3275049822C2BD5700ED2C10 /* NoteExtensionTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B52071822BFEF7300FE6F38 /* NoteExtensionTest.swift */; };
@@ -19,6 +20,7 @@
 		6B52070D22BFD7D900FE6F38 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6B52070B22BFD7D900FE6F38 /* LaunchScreen.storyboard */; };
 		6B52071522BFD80E00FE6F38 /* Note.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B52071422BFD80E00FE6F38 /* Note.swift */; };
 		6B52071722BFD95000FE6F38 /* NoteExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B52071622BFD95000FE6F38 /* NoteExtension.swift */; };
+		EB7A3F3F55EE4DC66BAC07DF /* libPods-NotesTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A0AFD8D6AD503AE468F02B6C /* libPods-NotesTests.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -37,6 +39,8 @@
 		3275049322C2BC6400ED2C10 /* NotesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotesTests.swift; sourceTree = "<group>"; };
 		3275049522C2BCF800ED2C10 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3275049922C2BEAD00ED2C10 /* FileNotebookTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileNotebookTests.swift; sourceTree = "<group>"; };
+		3CF5BB264B5DC5E10BA3A42D /* Pods-NotesTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NotesTests.release.xcconfig"; path = "Target Support Files/Pods-NotesTests/Pods-NotesTests.release.xcconfig"; sourceTree = "<group>"; };
+		4C8850B06A3BC7C6C4D51732 /* Pods-Notes.testqa.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Notes.testqa.xcconfig"; path = "Target Support Files/Pods-Notes/Pods-Notes.testqa.xcconfig"; sourceTree = "<group>"; };
 		6B5206FF22BFD7D900FE6F38 /* Notes.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Notes.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6B52070222BFD7D900FE6F38 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		6B52070422BFD7D900FE6F38 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -48,6 +52,12 @@
 		6B52071622BFD95000FE6F38 /* NoteExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteExtension.swift; sourceTree = "<group>"; };
 		6B52071822BFEF7300FE6F38 /* NoteExtensionTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteExtensionTest.swift; sourceTree = "<group>"; };
 		6B52072C22BFF01100FE6F38 /* NotesTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NotesTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		823A5D28FA91A990067BA5CE /* Pods-NotesTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NotesTests.debug.xcconfig"; path = "Target Support Files/Pods-NotesTests/Pods-NotesTests.debug.xcconfig"; sourceTree = "<group>"; };
+		913E29E430946677250BB24A /* libPods-Notes.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Notes.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		9AAEE810CED9C47A29231863 /* Pods-Notes.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Notes.debug.xcconfig"; path = "Target Support Files/Pods-Notes/Pods-Notes.debug.xcconfig"; sourceTree = "<group>"; };
+		A0AFD8D6AD503AE468F02B6C /* libPods-NotesTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-NotesTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		D02CFE9516AEAF144CFC60C5 /* Pods-NotesTests.testqa.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NotesTests.testqa.xcconfig"; path = "Target Support Files/Pods-NotesTests/Pods-NotesTests.testqa.xcconfig"; sourceTree = "<group>"; };
+		E9B4A64784EE54D2054FC5E6 /* Pods-Notes.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Notes.release.xcconfig"; path = "Target Support Files/Pods-Notes/Pods-Notes.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -55,6 +65,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3234E80FB5FA6A53B5E1AB19 /* libPods-Notes.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -62,12 +73,27 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EB7A3F3F55EE4DC66BAC07DF /* libPods-NotesTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2F7CF16935B496EDC347902C /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				9AAEE810CED9C47A29231863 /* Pods-Notes.debug.xcconfig */,
+				E9B4A64784EE54D2054FC5E6 /* Pods-Notes.release.xcconfig */,
+				4C8850B06A3BC7C6C4D51732 /* Pods-Notes.testqa.xcconfig */,
+				823A5D28FA91A990067BA5CE /* Pods-NotesTests.debug.xcconfig */,
+				3CF5BB264B5DC5E10BA3A42D /* Pods-NotesTests.release.xcconfig */,
+				D02CFE9516AEAF144CFC60C5 /* Pods-NotesTests.testqa.xcconfig */,
+			);
+			name = Pods;
+			path = Pods;
+			sourceTree = "<group>";
+		};
 		3275049C22C2C0E700ED2C10 /* Model */ = {
 			isa = PBXGroup;
 			children = (
@@ -84,6 +110,8 @@
 				6B52070122BFD7D900FE6F38 /* Notes */,
 				6B52071F22BFEFE100FE6F38 /* NotesTests */,
 				6B52070022BFD7D900FE6F38 /* Products */,
+				2F7CF16935B496EDC347902C /* Pods */,
+				6B67EC841D10D41C9396CF95 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -122,6 +150,15 @@
 			path = NotesTests;
 			sourceTree = "<group>";
 		};
+		6B67EC841D10D41C9396CF95 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				913E29E430946677250BB24A /* libPods-Notes.a */,
+				A0AFD8D6AD503AE468F02B6C /* libPods-NotesTests.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -129,6 +166,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 6B52071122BFD7D900FE6F38 /* Build configuration list for PBXNativeTarget "Notes" */;
 			buildPhases = (
+				AB93C327768BFDF1E9CD6D98 /* [CP] Check Pods Manifest.lock */,
 				6B5206FB22BFD7D900FE6F38 /* Sources */,
 				6B5206FC22BFD7D900FE6F38 /* Frameworks */,
 				6B5206FD22BFD7D900FE6F38 /* Resources */,
@@ -147,6 +185,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 6B52073322BFF01100FE6F38 /* Build configuration list for PBXNativeTarget "NotesTests" */;
 			buildPhases = (
+				FF11C16FE52438DFB7CA69D8 /* [CP] Check Pods Manifest.lock */,
 				6B52072822BFF01100FE6F38 /* Sources */,
 				6B52072922BFF01100FE6F38 /* Frameworks */,
 				6B52072A22BFF01100FE6F38 /* Resources */,
@@ -240,6 +279,50 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\nif [[ \"$CONFIGURATION\" == \"Release\" ]]; then\nPLIST=\"${PROJECT_DIR}/${INFOPLIST_FILE}\"\nPLB=/usr/libexec/PlistBuddy\nLAST_NUMBER=$($PLB -c \"Print CFBundleVersion\" \"$PLIST\")\nNEW_VERSION=$(($LAST_NUMBER + 1))\n$PLB -c \"Set :CFBundleVersion $NEW_VERSION\" \"$PLIST\"\nfi\n";
+		};
+		AB93C327768BFDF1E9CD6D98 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Notes-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		FF11C16FE52438DFB7CA69D8 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-NotesTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -352,6 +435,7 @@
 		};
 		2CB9B0F322C61556003F0FEF /* TestQA */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 4C8850B06A3BC7C6C4D51732 /* Pods-Notes.testqa.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -366,6 +450,7 @@
 		};
 		2CB9B0F422C61556003F0FEF /* TestQA */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = D02CFE9516AEAF144CFC60C5 /* Pods-NotesTests.testqa.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
@@ -492,6 +577,7 @@
 		};
 		6B52071222BFD7D900FE6F38 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 9AAEE810CED9C47A29231863 /* Pods-Notes.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -506,6 +592,7 @@
 		};
 		6B52071322BFD7D900FE6F38 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = E9B4A64784EE54D2054FC5E6 /* Pods-Notes.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -520,6 +607,7 @@
 		};
 		6B52073422BFF01100FE6F38 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 823A5D28FA91A990067BA5CE /* Pods-NotesTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
@@ -535,6 +623,7 @@
 		};
 		6B52073522BFF01100FE6F38 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 3CF5BB264B5DC5E10BA3A42D /* Pods-NotesTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
