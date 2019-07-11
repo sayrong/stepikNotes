@@ -82,6 +82,7 @@ class ViewController: UIViewController, IColorsController {
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var scrollViewContent: UIView!
     
+    var colorView: ColorPicker?
     
     func adjustTextHeight(textView: UITextView) {
         textView.translatesAutoresizingMaskIntoConstraints = true
@@ -119,9 +120,11 @@ class ViewController: UIViewController, IColorsController {
         #endif
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "dismissKeyboard")
         view.addGestureRecognizer(tap)
-        
         configureRect()
-        
+        colorView = ColorPicker(frame: CGRect(x: 0, y: 0, width: self.view.bounds.width, height: self.view.bounds.height))
+        colorView?.backgroundColor = UIColor.white
+        colorView?.isHidden = true
+        self.view.addSubview(colorView!)
         
 	}
 
@@ -143,10 +146,8 @@ class ViewController: UIViewController, IColorsController {
     
     
     @IBAction func testAction(_ sender: Any) {
-        let a = ColorPicker(frame: CGRect(x: 0, y: 0, width: self.view.bounds.width, height: self.view.bounds.height))
-        a.isOpaque = true
+        self.colorView?.isHidden = false
         
-        self.view.addSubview(a)
         
     }
     

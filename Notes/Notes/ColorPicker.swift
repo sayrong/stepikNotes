@@ -88,6 +88,7 @@ class ColorPicker: UIView {
     
     lazy var colorPickerView: Gradient = {
         let view = Gradient(frame: CGRect(x: 0, y: 0, width: 20, height: 20))
+        view.backgroundColor = .white
         view.translatesAutoresizingMaskIntoConstraints = false
         view.layer.borderColor = UIColor.black.cgColor
         view.layer.borderWidth = 1
