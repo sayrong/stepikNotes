@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		2C65664B22CB57F2000ADC1C /* MyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C65664A22CB57F2000ADC1C /* MyTests.swift */; };
+		2CBBC37422D7753D007486E0 /* ColorPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CBBC37322D7753D007486E0 /* ColorPicker.swift */; };
 		3234E80FB5FA6A53B5E1AB19 /* libPods-Notes.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 913E29E430946677250BB24A /* libPods-Notes.a */; };
 		3275047422C15C8400ED2C10 /* FileNotebook.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3275047322C15C8400ED2C10 /* FileNotebook.swift */; };
 		3275049722C2BD5400ED2C10 /* NotesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3275049322C2BC6400ED2C10 /* NotesTests.swift */; };
@@ -35,6 +36,7 @@
 
 /* Begin PBXFileReference section */
 		2C65664A22CB57F2000ADC1C /* MyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyTests.swift; sourceTree = "<group>"; };
+		2CBBC37322D7753D007486E0 /* ColorPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPicker.swift; sourceTree = "<group>"; };
 		3275047322C15C8400ED2C10 /* FileNotebook.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileNotebook.swift; sourceTree = "<group>"; };
 		3275049322C2BC6400ED2C10 /* NotesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotesTests.swift; sourceTree = "<group>"; };
 		3275049522C2BCF800ED2C10 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -90,7 +92,6 @@
 				3CF5BB264B5DC5E10BA3A42D /* Pods-NotesTests.release.xcconfig */,
 				D02CFE9516AEAF144CFC60C5 /* Pods-NotesTests.testqa.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -130,6 +131,7 @@
 				3275049C22C2C0E700ED2C10 /* Model */,
 				6B52070222BFD7D900FE6F38 /* AppDelegate.swift */,
 				6B52070422BFD7D900FE6F38 /* ViewController.swift */,
+				2CBBC37322D7753D007486E0 /* ColorPicker.swift */,
 				6B52070622BFD7D900FE6F38 /* Main.storyboard */,
 				6B52070922BFD7D900FE6F38 /* Assets.xcassets */,
 				6B52070B22BFD7D900FE6F38 /* LaunchScreen.storyboard */,
@@ -336,6 +338,7 @@
 				6B52071722BFD95000FE6F38 /* NoteExtension.swift in Sources */,
 				6B52070322BFD7D900FE6F38 /* AppDelegate.swift in Sources */,
 				6B52071522BFD80E00FE6F38 /* Note.swift in Sources */,
+				2CBBC37422D7753D007486E0 /* ColorPicker.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
