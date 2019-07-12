@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
-    <device id="retina6_5" orientation="portrait">
+    <device id="retina5_9" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
@@ -15,35 +15,35 @@
             <objects>
                 <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="Notes" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2gW-H2-kjn">
-                                <rect key="frame" x="0.0" y="44" width="414" height="818"/>
+                                <rect key="frame" x="0.0" y="44" width="375" height="734"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GZZ-tx-mbn">
-                                        <rect key="frame" x="0.0" y="0.0" width="414" height="818"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="734"/>
                                         <subviews>
                                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Enter title for your note" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="vdU-CV-12d">
-                                                <rect key="frame" x="20" y="18" width="374" height="30"/>
+                                                <rect key="frame" x="20" y="18" width="335" height="30"/>
                                                 <nil key="textColor"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <textInputTraits key="textInputTraits"/>
                                             </textField>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Use Destroy Date:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6nf-ut-vdI">
-                                                <rect key="frame" x="37" y="290.33333333333331" width="139" height="21"/>
+                                                <rect key="frame" x="37" y="307" width="139" height="21"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="h8g-oa-SzO">
-                                                <rect key="frame" x="205" y="285.33333333333331" width="51" height="31"/>
+                                                <rect key="frame" x="205" y="302" width="51" height="31"/>
                                                 <connections>
                                                     <action selector="dateSwitchAction:" destination="BYZ-38-t0r" eventType="valueChanged" id="VTZ-hy-7hc"/>
                                                 </connections>
                                             </switch>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KcI-cq-ctW" customClass="ColorViewRect" customModule="Notes" customModuleProvider="target">
-                                                <rect key="frame" x="55" y="331.33333333333331" width="70" height="70"/>
+                                                <rect key="frame" x="35.666666666666657" y="348" width="70" height="70"/>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="70" id="MSZ-NN-gnX"/>
@@ -51,7 +51,7 @@
                                                 </constraints>
                                             </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="seq-sS-zbg" customClass="ColorViewRect" customModule="Notes" customModuleProvider="target">
-                                                <rect key="frame" x="133" y="331.33333333333331" width="70" height="70"/>
+                                                <rect key="frame" x="113.66666666666669" y="348" width="70" height="70"/>
                                                 <color key="backgroundColor" red="1" green="0.26273061262675368" blue="0.24739926236955878" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="70" id="TcQ-KV-s3I"/>
@@ -59,7 +59,7 @@
                                                 </constraints>
                                             </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ad2-7I-e3I" customClass="ColorViewRect" customModule="Notes" customModuleProvider="target">
-                                                <rect key="frame" x="211" y="331.33333333333331" width="70" height="70"/>
+                                                <rect key="frame" x="191.66666666666666" y="348" width="69.999999999999972" height="70"/>
                                                 <color key="backgroundColor" red="0.33548928410574286" green="1" blue="0.41085588263793438" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="70" id="Hb3-Rt-cIz"/>
@@ -67,7 +67,7 @@
                                                 </constraints>
                                             </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wqG-ol-P96" customClass="ColorViewRect" customModule="Notes" customModuleProvider="target">
-                                                <rect key="frame" x="289" y="331.33333333333331" width="70" height="70"/>
+                                                <rect key="frame" x="269.66666666666669" y="348" width="70" height="70"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="70" id="9Y4-ei-A5T"/>
@@ -78,14 +78,14 @@
                                                 </userDefinedRuntimeAttributes>
                                             </view>
                                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="241-Va-cQ6">
-                                                <rect key="frame" x="20" y="70.000000000000014" width="374" height="183.33333333333337"/>
+                                                <rect key="frame" x="20" y="70" width="335" height="200"/>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                             </textView>
                                             <datePicker hidden="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="date" minuteInterval="1" translatesAutoresizingMaskIntoConstraints="NO" id="ZuP-ck-FI2">
-                                                <rect key="frame" x="35" y="331" width="344" height="216"/>
+                                                <rect key="frame" x="35" y="348" width="305" height="216"/>
                                                 <date key="date" timeIntervalSinceReferenceDate="584633388.85432601">
                                                     <!--2019-07-12 14:09:48 +0000-->
                                                 </date>

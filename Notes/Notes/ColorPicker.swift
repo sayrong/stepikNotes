@@ -167,7 +167,7 @@ class ColorPicker: UIView {
             //
             NSLayoutConstraint(item: slider, attribute: .top, relatedBy: .equal, toItem: brightLabel, attribute: .bottom, multiplier: 1, constant: 40),
             NSLayoutConstraint(item: slider, attribute: .leading, relatedBy: .equal, toItem: selectedColor, attribute: .trailing, multiplier: 1, constant: 20),
-            NSLayoutConstraint(item: slider, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 200),
+            NSLayoutConstraint(item: slider, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 180),
             NSLayoutConstraint(item: slider, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 20),
             //
             NSLayoutConstraint(item: colorPickerView, attribute: .top, relatedBy: .equal, toItem: selectedColor, attribute: .bottom, multiplier: 1, constant: 30),
