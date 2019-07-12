@@ -9,12 +9,13 @@
 import UIKit
 
 
-
-
+//При установке цвета одному квадрату, надо снять галки с других
+//Поэтому у каждому квадрата задан owner. Через него можно сборосить цвет остальным
 protocol IColorsController: class {
     func unselectColors();
 }
 
+//Квадраты выбора цвета
 @IBDesignable class ColorViewRect: UIView {
     
     weak var owner: IColorsController?
@@ -38,6 +39,7 @@ protocol IColorsController: class {
         self.layer.borderColor = UIColor.black.cgColor
     }
     
+    //Рисование галки
     private func markView() {
         let context = UIGraphicsGetCurrentContext()
         context?.setLineWidth(2.0)
@@ -50,6 +52,8 @@ protocol IColorsController: class {
         context?.strokePath()
     }
     
+    //Градиент. Шагаем попиксельно по х и меняем hue, по y яркость
+    //что за hue - https://ru.wikipedia.org/wiki/%D0%A2%D0%BE%D0%BD_(%D1%86%D0%B2%D0%B5%D1%82)
     private func makeGradient() {
         let context = UIGraphicsGetCurrentContext()
         for y : CGFloat in stride(from: 0.0 ,to: self.bounds.size.height, by: 1) {
@@ -62,7 +66,6 @@ protocol IColorsController: class {
             }
         }
     }
-    
     
     @objc func selectColor() {
         owner?.unselectColors()
@@ -78,21 +81,22 @@ class ViewController: UIViewController, IColorsController {
     @IBOutlet weak var colorRect3: ColorViewRect!
     @IBOutlet weak var colorRect4: ColorViewRect!
     @IBOutlet weak var noteText: UITextView!
-    
+    @IBOutlet weak var datePicker: UIDatePicker!
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var scrollViewContent: UIView!
+    @IBOutlet weak var destroyLabel: UILabel!
+    @IBOutlet weak var pickerNotHidden: NSLayoutConstraint!
+    @IBOutlet weak var pickerHidden: NSLayoutConstraint!
     
+    @IBOutlet weak var destroyDateSwitch: UISwitch!
     var colorView: ColorPicker?
     
-    func adjustTextHeight(textView: UITextView) {
-        textView.translatesAutoresizingMaskIntoConstraints = true
-        textView.sizeToFit()
-    }
-    
+    //сброс цвета к квадрадах
     func unselectColors() {
         colorRect1.selected = false
         colorRect2.selected = false
         colorRect3.selected = false
+        colorRect4.selected = false
     }
     
     private func configureRect() {
@@ -105,50 +109,81 @@ class ViewController: UIViewController, IColorsController {
         colorRect1.owner = self
         colorRect2.owner = self
         colorRect3.owner = self
+        //Для градиента owner не нужен, так как мы проваливаемся в ColorPicker и там есть completion
+        let gradientButton = UILongPressGestureRecognizer(target: self, action: #selector(showColorPicker))
+        colorRect4.addGestureRecognizer(gradientButton)
     }
     
     override func viewDidLoad() {
 		super.viewDidLoad()
-		// Do any additional setup after loading the view, typically from a nib.
-        //adjustTextHeight(textView: noteText)
         #if TESTQA
-            let welcomeMessage = UILabel(frame: CGRect(x: 5, y: 50, width: 200, height: 21))
-            welcomeMessage.textColor = .black
-            welcomeMessage.text = "Welcome to test version"
-            welcomeMessage.textAlignment = .center
-            super.view.addSubview(welcomeMessage)
+            //Можно что-то сделать для тестовой сборки
         #endif
-        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "dismissKeyboard")
+        //Тапаем за клавиатуру и она скрывается
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
         view.addGestureRecognizer(tap)
         configureRect()
-        colorView = ColorPicker(frame: CGRect(x: 0, y: 0, width: self.view.bounds.width, height: self.view.bounds.height))
-        colorView?.backgroundColor = UIColor.white
-        colorView?.isHidden = true
-        self.view.addSubview(colorView!)
-        
+        configureColorPicker()
 	}
-
+    
+    @objc func showColorPicker() {
+        colorView?.isHidden = false
+    }
+    //Вызвается при возврата из ColorPicker когда выбран цвет
+    func changeColorToGradient() {
+        colorRect4.backgroundColor = colorView?.color
+        colorRect4.isGradient = false
+        unselectColors()
+        colorRect4.selected = true
+        colorRect4.setNeedsDisplay()
+    }
+    
+    private func configureColorPicker() {
+        colorView = ColorPicker(frame: CGRect(x: 0, y: 0, width: self.view.bounds.width, height: self.view.bounds.height))
+        if let colorView = colorView {
+            colorView.translatesAutoresizingMaskIntoConstraints = false
+            colorView.backgroundColor = UIColor.white
+            colorView.isHidden = true
+            colorView.completion = changeColorToGradient
+            self.view.addSubview(colorView)
+            NSLayoutConstraint.activate([
+                NSLayoutConstraint(item: colorView, attribute: .top, relatedBy: .equal, toItem: self.view, attribute: .top, multiplier: 1, constant: 0),
+                NSLayoutConstraint(item: colorView, attribute: .bottom, relatedBy: .equal, toItem: self.view, attribute: .bottom, multiplier: 1, constant: 0),
+                NSLayoutConstraint(item: colorView, attribute: .leading, relatedBy: .equal, toItem: self.view, attribute: .leading, multiplier: 1, constant: 0),
+                NSLayoutConstraint(item: colorView, attribute: .trailing, relatedBy: .equal, toItem: self.view, attribute: .trailing, multiplier: 1, constant: 0)
+                ])
+        }
+    }
+    
 	override func didReceiveMemoryWarning() {
 		super.didReceiveMemoryWarning()
 		// Dispose of any resources that can be recreated.
 	}
 
-    @IBAction func test(_ sender: Any) {
-        adjustTextHeight(textView: noteText)
-    }
-    
-    
     @objc func dismissKeyboard() {
         //Causes the view (or one of its embedded text fields) to resign the first responder status.
         view.endEditing(true)
     }
     
+    //Заданы две констрейты, в активном состоянии они друг другу мешают.
+    //Сделано потому, что когда элемент hide = true, то он сохраняет свою форму просто невидим.
+    //Когда дата включена я цепляюсь (квадратами с выбором цветов) к ее нижней границе, когда выключена к лейблу с destroy date
+    @IBAction func dateSwitchAction(_ sender: UISwitch) {
+        datePicker.isHidden = !sender.isOn
+        self.view.setNeedsLayout()
+    }
     
-    
-    @IBAction func testAction(_ sender: Any) {
-        self.colorView?.isHidden = false
-        
-        
+    //isActive для constraint сбрасывается при повороте дисплея
+    //и устанавливется где-то после viewWillLayoutSubviews
+    override func viewDidLayoutSubviews() {
+        if destroyDateSwitch.isOn {
+            pickerHidden.isActive = false
+            pickerNotHidden.isActive = true
+        } else {
+            pickerHidden.isActive = true
+            pickerNotHidden.isActive = false
+        }
+        super.viewDidLayoutSubviews()
     }
     
 }

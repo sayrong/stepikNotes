@@ -26,6 +26,10 @@ class Gradient: UIView {
 
 class ColorPicker: UIView {
     
+    //Чтобы можно было выполнить стороннее действие после выбора цвета
+    var completion:(()->())?
+    
+    //Квадратная кнопка где будет отображаться цвет и его значение.
     class SelectedColorView: UIView {
         
         var colorView: UIView
@@ -33,6 +37,7 @@ class ColorPicker: UIView {
         
         init(color:UIColor) {
             self.colorView = UIView(frame: CGRect(x: 0, y: 0, width: 80, height: 80))
+            colorView.backgroundColor = UIColor.white
             self.hexColor = UILabel(frame: CGRect(x: 10, y: 80, width: 80, height: 20))
             self.hexColor.text = color.toHexString()
             super.init(frame: CGRect(x: 80, y: 80, width: 80, height: 100))
@@ -63,11 +68,13 @@ class ColorPicker: UIView {
         super.init(coder: aDecoder)
     }
     
+    
+    //Элементы и layout сделаны через код, так что на размер frame можно не обращать особого внимания
     lazy var doneButton: UIButton = {
         let doneButton = UIButton(type: .system)
         doneButton.setTitle("Done", for: .normal)
         doneButton.translatesAutoresizingMaskIntoConstraints = false
-        
+        doneButton.addTarget(self, action: #selector(doneTapped), for: .touchUpInside)
         return doneButton
     }()
     
@@ -76,6 +83,7 @@ class ColorPicker: UIView {
         slider.translatesAutoresizingMaskIntoConstraints = false
         slider.minimumValue = 0
         slider.maximumValue = 100
+        slider.addTarget(self, action: #selector(sliderValueChanged), for: .allTouchEvents)
         return slider
     }()
     
@@ -86,12 +94,17 @@ class ColorPicker: UIView {
         return label
     }()
     
+    //UILongPressGestureRecognizer селектор вызывается каждый раз при движении
     lazy var colorPickerView: Gradient = {
         let view = Gradient(frame: CGRect(x: 0, y: 0, width: 20, height: 20))
         view.backgroundColor = .white
         view.translatesAutoresizingMaskIntoConstraints = false
         view.layer.borderColor = UIColor.black.cgColor
         view.layer.borderWidth = 1
+        let recognizer = UILongPressGestureRecognizer()
+        recognizer.minimumPressDuration = 0
+        recognizer.addTarget(self, action: #selector(handlePickColorGesture(_:)))
+        view.addGestureRecognizer(recognizer)
         return view
     }()
     
@@ -101,6 +114,44 @@ class ColorPicker: UIView {
         return view
     }()
     
+    //При измении цвета сразу меняется отображение во view
+    var color: UIColor? {
+        didSet {
+            selectedColor.colorView.backgroundColor = color
+            selectedColor.hexColor.text = color?.toHexString()
+        }
+    }
+    
+    //Регулировка яркости через слайдер
+    @IBAction func sliderValueChanged(sender: UISlider) {
+        var red: CGFloat = 0
+        var green: CGFloat = 0
+        var blue: CGFloat = 0
+        var alpha: CGFloat = 0
+        color?.getRed(&red, green: &green, blue: &blue, alpha: &alpha)
+        let newAlpha = sender.value / 100
+        color = UIColor(red: red, green: green, blue: blue, alpha: CGFloat(newAlpha))
+    }
+    
+    //Обработки, которые мы вызвает через target
+    @objc func handlePickColorGesture(_ gesture: UILongPressGestureRecognizer) {
+        let point = gesture.location(in: colorPickerView)
+        guard colorPickerView.bounds.contains(point) else { return }
+        let color = getPixelColor(atPosition: point)
+        self.color = color
+        let alph = (CGFloat(self.colorPickerView.bounds.height - point.y) / self.colorPickerView.bounds.height)
+        slider.value = Float(alph) * 100
+    }
+    
+    @objc func doneTapped() {
+        self.isHidden = true
+        if let completion = completion {
+            completion()
+        }
+    }
+    
+    
+    //Настройки расположения элементов. Спускаемся сверху вниз
     private func setupLayout() {
         NSLayoutConstraint.activate([
             //
@@ -120,8 +171,8 @@ class ColorPicker: UIView {
             NSLayoutConstraint(item: slider, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 20),
             //
             NSLayoutConstraint(item: colorPickerView, attribute: .top, relatedBy: .equal, toItem: selectedColor, attribute: .bottom, multiplier: 1, constant: 30),
-            NSLayoutConstraint(item: colorPickerView, attribute: .leading, relatedBy: .equal, toItem: self, attribute: .leading, multiplier: 1, constant: 20),
-            NSLayoutConstraint(item: colorPickerView, attribute: .trailing, relatedBy: .equal, toItem: self, attribute: .trailing, multiplier: 1, constant: -20),
+            NSLayoutConstraint(item: colorPickerView, attribute: .leading, relatedBy: .equal, toItem: self, attribute: .leadingMargin, multiplier: 1, constant: 20),
+            NSLayoutConstraint(item: colorPickerView, attribute: .trailing, relatedBy: .equal, toItem: self, attribute: .trailingMargin, multiplier: 1, constant: -20),
             //
             NSLayoutConstraint(item: doneButton, attribute: .top, relatedBy: .equal, toItem: colorPickerView, attribute: .bottom, multiplier: 1, constant: 20),
             NSLayoutConstraint(item: doneButton, attribute: .centerX, relatedBy: .equal, toItem: self, attribute: .centerX, multiplier: 1, constant: 0),
@@ -132,6 +183,14 @@ class ColorPicker: UIView {
             ])
     }
     
+    //Цвет пикселя завит от позиции нашего поинта. Прозрачность от высоты, а цвет от ширины
+    func getPixelColor(atPosition:CGPoint) -> UIColor{
+        let alph = CGFloat(self.colorPickerView.bounds.height - atPosition.y) / self.colorPickerView.bounds.height
+        let hue = atPosition.x / self.colorPickerView.bounds.width
+        return UIColor(hue: hue, saturation: 1, brightness: 1, alpha: alph)
+    }
+ 
+    
 }
 
 extension UIColor {
@@ -140,11 +199,8 @@ extension UIColor {
         var g:CGFloat = 0
         var b:CGFloat = 0
         var a:CGFloat = 0
-        
         getRed(&r, green: &g, blue: &b, alpha: &a)
-        
         let rgb:Int = (Int)(r*255)<<16 | (Int)(g*255)<<8 | (Int)(b*255)<<0
-        
         return String(format:"#%06x", rgb) 
     }
 }

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
-    <device id="retina6_1" orientation="portrait">
+    <device id="retina6_5" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
@@ -31,16 +31,19 @@
                                                 <textInputTraits key="textInputTraits"/>
                                             </textField>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Use Destroy Date:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6nf-ut-vdI">
-                                                <rect key="frame" x="37" y="290.5" width="139" height="21"/>
+                                                <rect key="frame" x="37" y="290.33333333333331" width="139" height="21"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="h8g-oa-SzO">
-                                                <rect key="frame" x="205" y="285.5" width="51" height="31"/>
+                                                <rect key="frame" x="205" y="285.33333333333331" width="51" height="31"/>
+                                                <connections>
+                                                    <action selector="dateSwitchAction:" destination="BYZ-38-t0r" eventType="valueChanged" id="VTZ-hy-7hc"/>
+                                                </connections>
                                             </switch>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KcI-cq-ctW" customClass="ColorViewRect" customModule="Notes" customModuleProvider="target">
-                                                <rect key="frame" x="55" y="348.5" width="70" height="70"/>
+                                                <rect key="frame" x="55" y="331.33333333333331" width="70" height="70"/>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="70" id="MSZ-NN-gnX"/>
@@ -48,7 +51,7 @@
                                                 </constraints>
                                             </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="seq-sS-zbg" customClass="ColorViewRect" customModule="Notes" customModuleProvider="target">
-                                                <rect key="frame" x="133" y="348.5" width="70" height="70"/>
+                                                <rect key="frame" x="133" y="331.33333333333331" width="70" height="70"/>
                                                 <color key="backgroundColor" red="1" green="0.26273061262675368" blue="0.24739926236955878" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="70" id="TcQ-KV-s3I"/>
@@ -56,7 +59,7 @@
                                                 </constraints>
                                             </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ad2-7I-e3I" customClass="ColorViewRect" customModule="Notes" customModuleProvider="target">
-                                                <rect key="frame" x="211" y="348.5" width="70" height="70"/>
+                                                <rect key="frame" x="211" y="331.33333333333331" width="70" height="70"/>
                                                 <color key="backgroundColor" red="0.33548928410574286" green="1" blue="0.41085588263793438" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="70" id="Hb3-Rt-cIz"/>
@@ -64,7 +67,7 @@
                                                 </constraints>
                                             </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wqG-ol-P96" customClass="ColorViewRect" customModule="Notes" customModuleProvider="target">
-                                                <rect key="frame" x="289" y="348.5" width="70" height="70"/>
+                                                <rect key="frame" x="289" y="331.33333333333331" width="70" height="70"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="70" id="9Y4-ei-A5T"/>
@@ -75,43 +78,50 @@
                                                 </userDefinedRuntimeAttributes>
                                             </view>
                                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="241-Va-cQ6">
-                                                <rect key="frame" x="20" y="70" width="374" height="183.5"/>
+                                                <rect key="frame" x="20" y="70.000000000000014" width="374" height="183.33333333333337"/>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                             </textView>
-                                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="K53-jq-8iq">
-                                                <rect key="frame" x="37" y="525" width="46" height="30"/>
-                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                <state key="normal" title="Button"/>
-                                                <connections>
-                                                    <action selector="testAction:" destination="BYZ-38-t0r" eventType="touchUpInside" id="ZmP-d0-Prf"/>
-                                                </connections>
-                                            </button>
+                                            <datePicker hidden="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="date" minuteInterval="1" translatesAutoresizingMaskIntoConstraints="NO" id="ZuP-ck-FI2">
+                                                <rect key="frame" x="35" y="331" width="344" height="216"/>
+                                                <date key="date" timeIntervalSinceReferenceDate="584633388.85432601">
+                                                    <!--2019-07-12 14:09:48 +0000-->
+                                                </date>
+                                            </datePicker>
                                         </subviews>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstItem="6nf-ut-vdI" firstAttribute="leading" secondItem="GZZ-tx-mbn" secondAttribute="leading" constant="37" id="2Uz-Nx-hIz"/>
+                                            <constraint firstItem="KcI-cq-ctW" firstAttribute="top" secondItem="6nf-ut-vdI" secondAttribute="bottom" priority="999" constant="20" id="2W8-uh-hoZ"/>
                                             <constraint firstItem="241-Va-cQ6" firstAttribute="leading" secondItem="GZZ-tx-mbn" secondAttribute="leadingMargin" constant="12" id="3ub-ko-uPX"/>
                                             <constraint firstItem="h8g-oa-SzO" firstAttribute="leading" secondItem="6nf-ut-vdI" secondAttribute="trailing" constant="29" id="4Fz-v8-koe"/>
                                             <constraint firstItem="vdU-CV-12d" firstAttribute="leading" secondItem="GZZ-tx-mbn" secondAttribute="leading" constant="20" id="85Z-GG-c7e"/>
                                             <constraint firstItem="241-Va-cQ6" firstAttribute="top" secondItem="vdU-CV-12d" secondAttribute="bottom" constant="22" id="Dp8-QJ-wL2"/>
+                                            <constraint firstAttribute="trailing" secondItem="ZuP-ck-FI2" secondAttribute="trailing" constant="35" id="FAQ-Uv-LK6"/>
                                             <constraint firstItem="seq-sS-zbg" firstAttribute="leading" secondItem="KcI-cq-ctW" secondAttribute="trailing" constant="8" id="Ieq-1f-91e"/>
                                             <constraint firstAttribute="trailingMargin" secondItem="241-Va-cQ6" secondAttribute="trailing" constant="12" id="Nsi-IA-lXh"/>
                                             <constraint firstItem="wqG-ol-P96" firstAttribute="top" secondItem="KcI-cq-ctW" secondAttribute="top" id="PDC-NG-4Se"/>
                                             <constraint firstItem="vdU-CV-12d" firstAttribute="top" secondItem="GZZ-tx-mbn" secondAttribute="top" constant="18" id="QxQ-zh-Rh1"/>
-                                            <constraint firstItem="KcI-cq-ctW" firstAttribute="top" secondItem="6nf-ut-vdI" secondAttribute="bottom" constant="37" id="V7E-gy-Uy7"/>
+                                            <constraint firstItem="KcI-cq-ctW" firstAttribute="top" secondItem="ZuP-ck-FI2" secondAttribute="bottom" constant="20" id="V7E-gy-Uy7"/>
                                             <constraint firstItem="Ad2-7I-e3I" firstAttribute="top" secondItem="KcI-cq-ctW" secondAttribute="top" id="VoN-dA-QBc"/>
                                             <constraint firstItem="wqG-ol-P96" firstAttribute="leading" secondItem="Ad2-7I-e3I" secondAttribute="trailing" constant="8" id="YFU-Ah-Bbh"/>
                                             <constraint firstItem="Ad2-7I-e3I" firstAttribute="centerX" secondItem="GZZ-tx-mbn" secondAttribute="centerX" constant="39" id="fTb-Vf-kfw"/>
                                             <constraint firstItem="seq-sS-zbg" firstAttribute="top" secondItem="KcI-cq-ctW" secondAttribute="top" id="hQ1-TJ-PaO"/>
+                                            <constraint firstItem="ZuP-ck-FI2" firstAttribute="leading" secondItem="GZZ-tx-mbn" secondAttribute="leading" constant="35" id="jn6-fn-Eus"/>
+                                            <constraint firstItem="ZuP-ck-FI2" firstAttribute="top" secondItem="6nf-ut-vdI" secondAttribute="bottom" constant="20" id="oMa-3l-Ua1"/>
                                             <constraint firstItem="h8g-oa-SzO" firstAttribute="centerY" secondItem="6nf-ut-vdI" secondAttribute="centerY" id="pwU-vJ-Uzs"/>
                                             <constraint firstItem="6nf-ut-vdI" firstAttribute="top" secondItem="241-Va-cQ6" secondAttribute="bottom" constant="37" id="r8B-Aj-jZz"/>
                                             <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="KcI-cq-ctW" secondAttribute="bottom" constant="5" id="sts-hP-vvV"/>
                                             <constraint firstItem="Ad2-7I-e3I" firstAttribute="leading" secondItem="seq-sS-zbg" secondAttribute="trailing" constant="8" id="uHU-7q-OHd"/>
                                             <constraint firstAttribute="trailing" secondItem="vdU-CV-12d" secondAttribute="trailing" constant="20" id="yyX-Q4-cpb"/>
                                         </constraints>
+                                        <variation key="default">
+                                            <mask key="constraints">
+                                                <exclude reference="V7E-gy-Uy7"/>
+                                            </mask>
+                                        </variation>
                                     </view>
                                 </subviews>
                                 <constraints>
@@ -138,7 +148,12 @@
                         <outlet property="colorRect2" destination="seq-sS-zbg" id="mOx-js-6Km"/>
                         <outlet property="colorRect3" destination="Ad2-7I-e3I" id="k3b-8z-wwU"/>
                         <outlet property="colorRect4" destination="wqG-ol-P96" id="Enp-zB-PEL"/>
+                        <outlet property="datePicker" destination="ZuP-ck-FI2" id="pdP-2B-HEr"/>
+                        <outlet property="destroyDateSwitch" destination="h8g-oa-SzO" id="BQT-77-7iP"/>
+                        <outlet property="destroyLabel" destination="6nf-ut-vdI" id="xb9-Fh-mBa"/>
                         <outlet property="noteText" destination="241-Va-cQ6" id="6y1-9z-w15"/>
+                        <outlet property="pickerHidden" destination="2W8-uh-hoZ" id="Me2-NL-eW2"/>
+                        <outlet property="pickerNotHidden" destination="V7E-gy-Uy7" id="7Mr-oV-GA5"/>
                         <outlet property="scrollView" destination="2gW-H2-kjn" id="Xsd-nT-xlN"/>
                         <outlet property="scrollViewContent" destination="GZZ-tx-mbn" id="NTS-8q-6Dk"/>
                     </connections>
