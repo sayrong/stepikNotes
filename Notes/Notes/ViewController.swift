@@ -136,6 +136,7 @@ class ViewController: UIViewController, IColorsController {
         unselectColors()
         colorRect4.selected = true
         colorRect4.setNeedsDisplay()
+        
     }
     
     private func configureColorPicker() {

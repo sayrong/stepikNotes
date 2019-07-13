@@ -9,7 +9,41 @@
 import Foundation
 import UIKit
 
+//Указатель на цвет под пальцем
+class Pointer: UIView {
+    override func draw(_ rect: CGRect) {
+        let context = UIGraphicsGetCurrentContext()
+       
+        context?.setLineWidth(3.0)
+        context?.setStrokeColor(UIColor.black.cgColor)
+        context?.addEllipse(in: CGRect(x: 8, y: 8, width: self.bounds.width - 16, height: self.bounds.height - 16))
+
+        context?.move(to: CGPoint(x: self.bounds.width / 2, y: 8))
+        context?.addLine(to: CGPoint(x: self.bounds.width / 2, y: 0))
+
+        context?.move(to: CGPoint(x: self.bounds.width / 2, y: self.bounds.height - 8))
+        context?.addLine(to: CGPoint(x: self.bounds.width / 2, y: self.bounds.height))
+
+        context?.move(to: CGPoint(x: 0, y: self.bounds.height / 2))
+        context?.addLine(to: CGPoint(x: 8, y: self.bounds.height / 2))
+        
+        context?.move(to: CGPoint(x: self.bounds.width - 8, y: self.bounds.height / 2))
+        context?.addLine(to: CGPoint(x: self.bounds.width, y: self.bounds.height / 2))
+        context?.strokePath()
+        
+    }
+}
+
 class Gradient: UIView {
+    
+    //Указатель на цвет под пальцем
+    lazy var pointer: Pointer = {
+        let pointer = Pointer(frame: CGRect(x: 0, y: 0, width: 38, height: 38))
+        pointer.isOpaque = false
+        pointer.isHidden = true
+        return pointer
+    }()
+    
     override func draw(_ rect: CGRect) {
         let context = UIGraphicsGetCurrentContext()
         for y : CGFloat in stride(from: 0.0 ,to: self.bounds.size.height, by: 1) {
@@ -21,6 +55,27 @@ class Gradient: UIView {
                 context!.fill(CGRect(x:x, y:y, width:1,height:1))
             }
         }
+    }
+    
+    //При изменении размеры поля выбора цвета надо менять соответственно коортинаты указателя
+    //Как у меня бомбило с этого задания
+    override var bounds: CGRect {
+        willSet {
+            let oldPoint = pointer.center
+            let oldValue = self.bounds
+            let difHight = newValue.height / oldValue.height
+            let difWidth = newValue.width / oldValue.width
+            pointer.center = CGPoint(x: oldPoint.x * difWidth, y: oldPoint.y * difHight)
+        }
+    }
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        self.addSubview(pointer)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
     }
 }
 
@@ -52,6 +107,7 @@ class ColorPicker: UIView {
         required init?(coder aDecoder: NSCoder) {
             fatalError("init(coder:) has not been implemented")
         }
+        
     }
     
     override init(frame: CGRect) {
@@ -137,6 +193,8 @@ class ColorPicker: UIView {
     @objc func handlePickColorGesture(_ gesture: UILongPressGestureRecognizer) {
         let point = gesture.location(in: colorPickerView)
         guard colorPickerView.bounds.contains(point) else { return }
+        if colorPickerView.pointer.isHidden { colorPickerView.pointer.isHidden = false }
+        colorPickerView.pointer.center = point
         let color = getPixelColor(atPosition: point)
         self.color = color
         let alph = (CGFloat(self.colorPickerView.bounds.height - point.y) / self.colorPickerView.bounds.height)
