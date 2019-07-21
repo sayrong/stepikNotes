@@ -14,12 +14,17 @@
 		2CC2432422DC7BE50087296D /* HelloVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CC2432222DC7BE50087296D /* HelloVC.swift */; };
 		2CC2432522DC7BE50087296D /* HelloVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2CC2432322DC7BE50087296D /* HelloVC.xib */; };
 		3234E80FB5FA6A53B5E1AB19 /* libPods-Notes.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 913E29E430946677250BB24A /* libPods-Notes.a */; };
+		32662F1422E3441500272417 /* TableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32662F1322E3441500272417 /* TableViewController.swift */; };
+		32662F1922E3449300272417 /* TableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32662F1722E3449300272417 /* TableViewCell.swift */; };
+		32662F1A22E3449300272417 /* TableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32662F1822E3449300272417 /* TableViewCell.xib */; };
+		3267DC8C22E4E24F009BEB5C /* ColorPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3267DC8B22E4E24F009BEB5C /* ColorPickerViewController.swift */; };
+		3267DC8E22E50125009BEB5C /* ScrollViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3267DC8D22E50125009BEB5C /* ScrollViewController.swift */; };
 		3275047422C15C8400ED2C10 /* FileNotebook.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3275047322C15C8400ED2C10 /* FileNotebook.swift */; };
 		3275049722C2BD5400ED2C10 /* NotesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3275049322C2BC6400ED2C10 /* NotesTests.swift */; };
 		3275049822C2BD5700ED2C10 /* NoteExtensionTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B52071822BFEF7300FE6F38 /* NoteExtensionTest.swift */; };
 		3275049A22C2BEAD00ED2C10 /* FileNotebookTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3275049922C2BEAD00ED2C10 /* FileNotebookTests.swift */; };
 		6B52070322BFD7D900FE6F38 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B52070222BFD7D900FE6F38 /* AppDelegate.swift */; };
-		6B52070522BFD7D900FE6F38 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B52070422BFD7D900FE6F38 /* ViewController.swift */; };
+		6B52070522BFD7D900FE6F38 /* EditNoteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B52070422BFD7D900FE6F38 /* EditNoteViewController.swift */; };
 		6B52070822BFD7D900FE6F38 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6B52070622BFD7D900FE6F38 /* Main.storyboard */; };
 		6B52070A22BFD7D900FE6F38 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6B52070922BFD7D900FE6F38 /* Assets.xcassets */; };
 		6B52070D22BFD7D900FE6F38 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6B52070B22BFD7D900FE6F38 /* LaunchScreen.storyboard */; };
@@ -45,6 +50,11 @@
 		2CC2431E22DC7A130087296D /* LoginVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LoginVC.xib; sourceTree = "<group>"; };
 		2CC2432222DC7BE50087296D /* HelloVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelloVC.swift; sourceTree = "<group>"; };
 		2CC2432322DC7BE50087296D /* HelloVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = HelloVC.xib; sourceTree = "<group>"; };
+		32662F1322E3441500272417 /* TableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewController.swift; sourceTree = "<group>"; };
+		32662F1722E3449300272417 /* TableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewCell.swift; sourceTree = "<group>"; };
+		32662F1822E3449300272417 /* TableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TableViewCell.xib; sourceTree = "<group>"; };
+		3267DC8B22E4E24F009BEB5C /* ColorPickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPickerViewController.swift; sourceTree = "<group>"; };
+		3267DC8D22E50125009BEB5C /* ScrollViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollViewController.swift; sourceTree = "<group>"; };
 		3275047322C15C8400ED2C10 /* FileNotebook.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileNotebook.swift; sourceTree = "<group>"; };
 		3275049322C2BC6400ED2C10 /* NotesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotesTests.swift; sourceTree = "<group>"; };
 		3275049522C2BCF800ED2C10 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -53,7 +63,7 @@
 		4C8850B06A3BC7C6C4D51732 /* Pods-Notes.testqa.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Notes.testqa.xcconfig"; path = "Target Support Files/Pods-Notes/Pods-Notes.testqa.xcconfig"; sourceTree = "<group>"; };
 		6B5206FF22BFD7D900FE6F38 /* Notes.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Notes.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6B52070222BFD7D900FE6F38 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		6B52070422BFD7D900FE6F38 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		6B52070422BFD7D900FE6F38 /* EditNoteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditNoteViewController.swift; sourceTree = "<group>"; };
 		6B52070722BFD7D900FE6F38 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		6B52070922BFD7D900FE6F38 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		6B52070C22BFD7D900FE6F38 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -147,11 +157,16 @@
 		6B52070122BFD7D900FE6F38 /* Notes */ = {
 			isa = PBXGroup;
 			children = (
+				2CC2432122DC7A190087296D /* Login */,
 				3275049C22C2C0E700ED2C10 /* Model */,
 				6B52070222BFD7D900FE6F38 /* AppDelegate.swift */,
-				6B52070422BFD7D900FE6F38 /* ViewController.swift */,
-				2CC2432122DC7A190087296D /* Login */,
+				6B52070422BFD7D900FE6F38 /* EditNoteViewController.swift */,
+				32662F1322E3441500272417 /* TableViewController.swift */,
+				32662F1722E3449300272417 /* TableViewCell.swift */,
+				32662F1822E3449300272417 /* TableViewCell.xib */,
 				2CBBC37322D7753D007486E0 /* ColorPicker.swift */,
+				3267DC8B22E4E24F009BEB5C /* ColorPickerViewController.swift */,
+				3267DC8D22E50125009BEB5C /* ScrollViewController.swift */,
 				6B52070622BFD7D900FE6F38 /* Main.storyboard */,
 				6B52070922BFD7D900FE6F38 /* Assets.xcassets */,
 				6B52070B22BFD7D900FE6F38 /* LaunchScreen.storyboard */,
@@ -270,6 +285,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				6B52070D22BFD7D900FE6F38 /* LaunchScreen.storyboard in Resources */,
+				32662F1A22E3449300272417 /* TableViewCell.xib in Resources */,
 				6B52070A22BFD7D900FE6F38 /* Assets.xcassets in Resources */,
 				2CC2432522DC7BE50087296D /* HelloVC.xib in Resources */,
 				2CC2432022DC7A130087296D /* LoginVC.xib in Resources */,
@@ -356,12 +372,16 @@
 			buildActionMask = 2147483647;
 			files = (
 				3275047422C15C8400ED2C10 /* FileNotebook.swift in Sources */,
-				6B52070522BFD7D900FE6F38 /* ViewController.swift in Sources */,
+				6B52070522BFD7D900FE6F38 /* EditNoteViewController.swift in Sources */,
 				2CC2431F22DC7A130087296D /* LoginVC.swift in Sources */,
 				6B52071722BFD95000FE6F38 /* NoteExtension.swift in Sources */,
+				3267DC8C22E4E24F009BEB5C /* ColorPickerViewController.swift in Sources */,
 				6B52070322BFD7D900FE6F38 /* AppDelegate.swift in Sources */,
+				32662F1922E3449300272417 /* TableViewCell.swift in Sources */,
+				3267DC8E22E50125009BEB5C /* ScrollViewController.swift in Sources */,
 				2CC2432422DC7BE50087296D /* HelloVC.swift in Sources */,
 				6B52071522BFD80E00FE6F38 /* Note.swift in Sources */,
+				32662F1422E3441500272417 /* TableViewController.swift in Sources */,
 				2CBBC37422D7753D007486E0 /* ColorPicker.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

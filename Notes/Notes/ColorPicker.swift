@@ -82,7 +82,7 @@ class Gradient: UIView {
 class ColorPicker: UIView {
     
     //Чтобы можно было выполнить стороннее действие после выбора цвета
-    var completion:(()->())?
+    var completion:((_ color: UIColor)->())?
     
     //Квадратная кнопка где будет отображаться цвет и его значение.
     class SelectedColorView: UIView {
@@ -202,9 +202,8 @@ class ColorPicker: UIView {
     }
     
     @objc func doneTapped() {
-        self.isHidden = true
         if let completion = completion {
-            completion()
+            completion(selectedColor.colorView.backgroundColor ?? UIColor.white)
         }
     }
     
@@ -213,13 +212,13 @@ class ColorPicker: UIView {
     private func setupLayout() {
         NSLayoutConstraint.activate([
             //
-            NSLayoutConstraint(item: selectedColor, attribute: .top, relatedBy: .equal, toItem: self, attribute: .top, multiplier: 1, constant: 60),
+            NSLayoutConstraint(item: selectedColor, attribute: .top, relatedBy: .equal, toItem: self, attribute: .topMargin, multiplier: 1, constant: 30),
             NSLayoutConstraint(item: selectedColor, attribute: .leading, relatedBy: .equal, toItem: self, attribute: .leading, multiplier: 1, constant: 20),
             NSLayoutConstraint(item: selectedColor, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 80),
             NSLayoutConstraint(item: selectedColor, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 100),
             //
             NSLayoutConstraint(item: brightLabel, attribute: .leading, relatedBy: .equal, toItem: selectedColor, attribute: .trailing, multiplier: 1, constant: 20),
-            NSLayoutConstraint(item: brightLabel, attribute: .top, relatedBy: .equal, toItem: self, attribute: .top, multiplier: 1, constant: 80),
+            NSLayoutConstraint(item: brightLabel, attribute: .top, relatedBy: .equal, toItem: self, attribute: .topMargin, multiplier: 1, constant: 40),
             NSLayoutConstraint(item: brightLabel, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 120),
             NSLayoutConstraint(item: brightLabel, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 20),
             //

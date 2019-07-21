@@ -1,0 +1,138 @@
+//
+//  TableViewController.swift
+//  Notes
+//
+//  Created by Dima on 20/07/2019.
+//  Copyright © 2019 Babette Alvyn sharp. All rights reserved.
+//
+
+import UIKit
+
+class TableViewController: UITableViewController {
+
+    var model: FileNotebook!
+    let reuseIdentifier = "customNotesCell"
+    
+    private func setupTestingContent(_ model: FileNotebook) {
+        model.loadFromFile()
+        if model.notes.isEmpty {
+            model.add(Note(uid: UUID().uuidString, title: "Последние задание на курсе iOS начинаем", content: "Было довольно интересно. Но курс определенно не рассчитан на новичков. Больше всего запомнилось задание с ColorPicker. Оно было довольно сложное, но интересное.", color: UIColor.red, importance: .important, destructDate: Date(timeIntervalSinceNow: 60 * 60 * 24 + 1)))
+            model.add(Note(uid: UUID().uuidString, title: "Погода в Москве", content: "В последнее время не переставая льют дожди. Это может быть даже и хорошо, так как особо не тянет на улицу гулять. Можно посвятить время домашних делам.", color: UIColor.white, importance: .normal, destructDate: nil))
+            model.add(Note(uid: UUID().uuidString, title: "Как переехать в Silicon valley", content: "Именно такой ролик я только что смотрел на youtube. Это канал резидента Comedy Таира. Показывали нескольких героев, которые благополучно туда переехали. Один работает в facebook, у другого своя игровая студия, третий какой-то мутный advice инвестор, а четвертый инженер из tesla.", color: UIColor.blue, importance: .normal, destructDate: nil))
+            model.add(Note(title: "Сериалы", content: "Закончил смотреть Видоизмененный углерод. Довольно интересный. С первых серий заметно затягивает, но потом уже спокойно смотришь и ждешь развязки. Не скажу, что это лучший сериал. Мир дикого запада намного больше зацепил, как по сюжету, так и по музыкальному сопровождению и эффектам.", importance: .normal))
+            model.add(Note(title: "Потоки информации", content: "Немного напрягает, что большую часть информации я получаю из каких-либо видео материалов. И если подумать, то это информация пустая, которую ты через 5 мин забудешь и не вспомнишь. Но именно туда ты инвестируешь свое время. На развлечение и картинки. То есть ты как бы являешься пассивной стороной, куда по шлангу закачают информацию. Может стоит начать думать своей головой, записывать свои мысли и больше читать.", importance: .unimportant))
+            model.saveToFile()
+        }
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        self.title = "Заметки"
+        model = FileNotebook(filename: "myNotes2")
+        setupTestingContent(model)
+        self.tableView.register(UINib(nibName: "TableViewCell", bundle: nil), forCellReuseIdentifier: reuseIdentifier)
+        
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(createNewNote))
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Edit", style: .plain, target: self, action: #selector(makeEditable))
+    }
+    
+    @objc private func makeEditable() {
+        self.tableView.isEditing = !tableView.isEditing
+    }
+    
+    @objc private func createNewNote() {
+        self.performSegue(withIdentifier: "editSegue", sender: self)
+    }
+    
+    // MARK: - Table view data source
+
+    override func numberOfSections(in tableView: UITableView) -> Int {
+        // #warning Incomplete implementation, return the number of sections
+        return 1
+    }
+
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        // #warning Incomplete implementation, return the number of rows
+        return model.notes.count
+    }
+
+    
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath) as! TableViewCell
+        let note = model.notes[indexPath.row]
+        cell.colorView.backgroundColor = note.color
+        cell.customTitle.text = note.title
+        cell.customDescription?.text = note.content
+        return cell
+    }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        self.performSegue(withIdentifier: "editSegue", sender: indexPath)
+    }
+    
+    //для удаления со свайпом влево
+    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+    
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            let uid = model.notes[indexPath.row].uid
+            model.remove(with: uid)
+            self.tableView.deleteRows(at: [indexPath], with: .left)
+        }
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let vc = segue.destination as? EditNoteViewController, segue.identifier == "editSegue" {
+            if let index = sender as? IndexPath {
+                vc.noteToEdit = model.notes[index.row]
+            }
+            vc.completion = returnFromNoteEdit(vc:)
+        }
+    }
+    
+    func returnFromNoteEdit(vc: EditNoteViewController) {
+        //условия для новой заметки
+        guard let name = vc.noteName.text,
+            let content = vc.noteText.text,
+            !name.isEmpty, !content.isEmpty
+        else {
+            return
+        }
+        var color = UIColor.white
+        if vc.colorRect2.selected { color = vc.colorRect2.backgroundColor! }
+        else if vc.colorRect3.selected { color = vc.colorRect3.backgroundColor! }
+        else if vc.colorRect4.selected {color = vc.colorRect4.backgroundColor! }
+        //вернувшиеся заметка
+        let date = vc.destroyDateSwitch.isOn ? vc.datePicker.date : nil
+        let newNote = Note(uid: UUID().uuidString, title: name, content: content, color: color, importance: .normal, destructDate: date)
+        //если указана модель то редактируем
+        if let noteToEdit = vc.noteToEdit {
+            for note in model.notes {
+                if note.uid == noteToEdit.uid {
+                    if isNoteChange(note: note, new: newNote) {
+                        model.remove(with: note.uid)
+                        model.add(newNote)
+                        self.tableView.reloadData()
+                    } else {
+                        return
+                    }
+                }
+            }
+        //в противном случае просто добавляем
+        } else {
+            model.add(newNote)
+            self.tableView.reloadData()
+        }
+    }
+    
+    private func isNoteChange(note: Note, new: Note) -> Bool {
+        let changedTitle = note.title != new.title
+        let changedContent = note.content != new.content
+        let changedDate = note.selfDestructDate != new.selfDestructDate
+        let changedColor = note.color != new.color
+        return changedTitle || changedContent || changedDate || changedColor
+    }
+
+}

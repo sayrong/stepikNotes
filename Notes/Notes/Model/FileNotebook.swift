@@ -24,7 +24,7 @@ class FileNotebook {
                 return
             }
         }
-        notes.append(note)
+        notes.insert(note, at: 0)
     }
     
     public func remove(with uid: String) {
