@@ -18,9 +18,11 @@ class FileNotebook {
         self.filename = filename
     }
     
+    //если обнаруживаем заметку с таким же id, то заменяем ее на новую
     public func add(_ note: Note) {
-        for i in notes {
-            if i.uid == note.uid {
+        for (i,j) in notes.enumerated() {
+            if j.uid == note.uid {
+                notes[i] = note
                 return
             }
         }

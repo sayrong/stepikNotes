@@ -8,6 +8,8 @@
 
 import UIKit
 
+//Обозначаем, что мы у нас есть owner, с таким аттрибутом.
+//При ухода со страницы мы задаем, чтобы он был равен цвету из нашего контролера.
 protocol selectedColorProtocol: class{
     var selectedColor: UIColor { get set }
 }
@@ -16,11 +18,12 @@ class ColorPickerViewController: UIViewController {
 
     var selectedColor: UIColor?
     weak var owner: selectedColorProtocol?
+    //Основная логика прописана во вью. Хотя это не правильно)
+    //Чтобы забрать оттуда цвет, передаем туда комплишон блок.
     var colorView: ColorPicker?
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -33,7 +36,6 @@ class ColorPickerViewController: UIViewController {
             self.view.addSubview(colorView)
             colorView.translatesAutoresizingMaskIntoConstraints = false
             colorView.backgroundColor = UIColor.white
-            //colorView.isHidden = true
             colorView.completion = completion(color:)
             self.view.addSubview(colorView)
             NSLayoutConstraint.activate([

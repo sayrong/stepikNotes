@@ -12,6 +12,8 @@ class TableViewController: UITableViewController {
 
     var model: FileNotebook!
     let reuseIdentifier = "customNotesCell"
+    let dbQueue = OperationQueue()
+    let backendQueue = OperationQueue()
     
     private func setupTestingContent(_ model: FileNotebook) {
         model.loadFromFile()
@@ -28,12 +30,17 @@ class TableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.title = "Заметки"
-        model = FileNotebook(filename: "myNotes2")
-        setupTestingContent(model)
+        model = FileNotebook(filename: "myNotes")
         self.tableView.register(UINib(nibName: "TableViewCell", bundle: nil), forCellReuseIdentifier: reuseIdentifier)
-        
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(createNewNote))
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Edit", style: .plain, target: self, action: #selector(makeEditable))
+        
+        backendQueue.maxConcurrentOperationCount = 1
+        dbQueue.maxConcurrentOperationCount = 1
+        let loadOperation = LoadNotesOperation(notebook: model, backendQueue: backendQueue, dbQueue: dbQueue)
+        loadOperation.completionBlock = {
+            self.tableView.reloadData()
+        }
     }
     
     @objc private func makeEditable() {
@@ -107,14 +114,17 @@ class TableViewController: UITableViewController {
         //вернувшиеся заметка
         let date = vc.destroyDateSwitch.isOn ? vc.datePicker.date : nil
         let newNote = Note(uid: UUID().uuidString, title: name, content: content, color: color, importance: .normal, destructDate: date)
-        //если указана модель то редактируем
+        //если в editController указана модель, то заметка уже есть. Проверяем изменения
         if let noteToEdit = vc.noteToEdit {
             for note in model.notes {
                 if note.uid == noteToEdit.uid {
                     if isNoteChange(note: note, new: newNote) {
-                        model.remove(with: note.uid)
-                        model.add(newNote)
-                        self.tableView.reloadData()
+                        //model.remove(with: note.uid)
+                        //model.add(newNote)
+                        let remove = RemoveNoteOperation(note: note, notebook: model, backendQueue: backendQueue, dbQueue: dbQueue)
+                        remove.completionBlock = {
+                            let saveOp = SaveNoteOperation(note: newNote, notebook: self.model, backendQueue: self.backendQueue, dbQueue: self.dbQueue)
+                        }
                     } else {
                         return
                     }
@@ -122,8 +132,7 @@ class TableViewController: UITableViewController {
             }
         //в противном случае просто добавляем
         } else {
-            model.add(newNote)
-            self.tableView.reloadData()
+            let saveOp = SaveNoteOperation(note: newNote, notebook: model, backendQueue: backendQueue, dbQueue: dbQueue)
         }
     }
     

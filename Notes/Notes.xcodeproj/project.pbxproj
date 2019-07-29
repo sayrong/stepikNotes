@@ -8,6 +8,17 @@
 
 /* Begin PBXBuildFile section */
 		2C65664B22CB57F2000ADC1C /* MyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C65664A22CB57F2000ADC1C /* MyTests.swift */; };
+		2C8974E522EEEBAE00E9EFDC /* BaseBackendOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C8974E422EEEBAE00E9EFDC /* BaseBackendOperation.swift */; };
+		2C8974E922EEED9900E9EFDC /* AsyncOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C8974E822EEED9900E9EFDC /* AsyncOperation.swift */; };
+		2C8974EB22EEF13E00E9EFDC /* SaveNotesBackendOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C8974EA22EEF13E00E9EFDC /* SaveNotesBackendOperation.swift */; };
+		2C8974ED22EEF16900E9EFDC /* LoadNotesBackendOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C8974EC22EEF16900E9EFDC /* LoadNotesBackendOperation.swift */; };
+		2C8974EF22EEF6FD00E9EFDC /* BaseDBOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C8974EE22EEF6FD00E9EFDC /* BaseDBOperation.swift */; };
+		2C8974F122EEF71200E9EFDC /* SaveNoteDBOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C8974F022EEF71200E9EFDC /* SaveNoteDBOperation.swift */; };
+		2C8974F322EEF71F00E9EFDC /* LoadNotesDBOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C8974F222EEF71F00E9EFDC /* LoadNotesDBOperation.swift */; };
+		2C8974F522EEF72C00E9EFDC /* RemoveNoteDBOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C8974F422EEF72C00E9EFDC /* RemoveNoteDBOperation.swift */; };
+		2C8974F822EF02F200E9EFDC /* SaveNoteOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C8974F722EF02F200E9EFDC /* SaveNoteOperation.swift */; };
+		2C8974FA22EF03BE00E9EFDC /* LoadNotesOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C8974F922EF03BE00E9EFDC /* LoadNotesOperation.swift */; };
+		2C8974FC22EF03E000E9EFDC /* RemoveNoteOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C8974FB22EF03E000E9EFDC /* RemoveNoteOperation.swift */; };
 		2CBBC37422D7753D007486E0 /* ColorPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CBBC37322D7753D007486E0 /* ColorPicker.swift */; };
 		2CC2431F22DC7A130087296D /* LoginVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CC2431D22DC7A130087296D /* LoginVC.swift */; };
 		2CC2432022DC7A130087296D /* LoginVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2CC2431E22DC7A130087296D /* LoginVC.xib */; };
@@ -45,6 +56,18 @@
 
 /* Begin PBXFileReference section */
 		2C65664A22CB57F2000ADC1C /* MyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyTests.swift; sourceTree = "<group>"; };
+		2C7150BB22EF3C7100F07F0C /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		2C8974E422EEEBAE00E9EFDC /* BaseBackendOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseBackendOperation.swift; sourceTree = "<group>"; };
+		2C8974E822EEED9900E9EFDC /* AsyncOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncOperation.swift; sourceTree = "<group>"; };
+		2C8974EA22EEF13E00E9EFDC /* SaveNotesBackendOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveNotesBackendOperation.swift; sourceTree = "<group>"; };
+		2C8974EC22EEF16900E9EFDC /* LoadNotesBackendOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadNotesBackendOperation.swift; sourceTree = "<group>"; };
+		2C8974EE22EEF6FD00E9EFDC /* BaseDBOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseDBOperation.swift; sourceTree = "<group>"; };
+		2C8974F022EEF71200E9EFDC /* SaveNoteDBOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveNoteDBOperation.swift; sourceTree = "<group>"; };
+		2C8974F222EEF71F00E9EFDC /* LoadNotesDBOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadNotesDBOperation.swift; sourceTree = "<group>"; };
+		2C8974F422EEF72C00E9EFDC /* RemoveNoteDBOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoveNoteDBOperation.swift; sourceTree = "<group>"; };
+		2C8974F722EF02F200E9EFDC /* SaveNoteOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveNoteOperation.swift; sourceTree = "<group>"; };
+		2C8974F922EF03BE00E9EFDC /* LoadNotesOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadNotesOperation.swift; sourceTree = "<group>"; };
+		2C8974FB22EF03E000E9EFDC /* RemoveNoteOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoveNoteOperation.swift; sourceTree = "<group>"; };
 		2CBBC37322D7753D007486E0 /* ColorPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPicker.swift; sourceTree = "<group>"; };
 		2CC2431D22DC7A130087296D /* LoginVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginVC.swift; sourceTree = "<group>"; };
 		2CC2431E22DC7A130087296D /* LoginVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LoginVC.xib; sourceTree = "<group>"; };
@@ -67,7 +90,6 @@
 		6B52070722BFD7D900FE6F38 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		6B52070922BFD7D900FE6F38 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		6B52070C22BFD7D900FE6F38 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		6B52070E22BFD7D900FE6F38 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		6B52071422BFD80E00FE6F38 /* Note.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Note.swift; sourceTree = "<group>"; };
 		6B52071622BFD95000FE6F38 /* NoteExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteExtension.swift; sourceTree = "<group>"; };
 		6B52071822BFEF7300FE6F38 /* NoteExtensionTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteExtensionTest.swift; sourceTree = "<group>"; };
@@ -100,6 +122,48 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2C8974E322EEEB9400E9EFDC /* Operations */ = {
+			isa = PBXGroup;
+			children = (
+				2C8974E822EEED9900E9EFDC /* AsyncOperation.swift */,
+				2C8974E622EEECB300E9EFDC /* BackendOpertations */,
+				2C8974E722EEECE200E9EFDC /* DBOperations */,
+				2C8974F622EF02A000E9EFDC /* AggregatingOperations */,
+			);
+			path = Operations;
+			sourceTree = "<group>";
+		};
+		2C8974E622EEECB300E9EFDC /* BackendOpertations */ = {
+			isa = PBXGroup;
+			children = (
+				2C8974E422EEEBAE00E9EFDC /* BaseBackendOperation.swift */,
+				2C8974EA22EEF13E00E9EFDC /* SaveNotesBackendOperation.swift */,
+				2C8974EC22EEF16900E9EFDC /* LoadNotesBackendOperation.swift */,
+			);
+			path = BackendOpertations;
+			sourceTree = "<group>";
+		};
+		2C8974E722EEECE200E9EFDC /* DBOperations */ = {
+			isa = PBXGroup;
+			children = (
+				2C8974EE22EEF6FD00E9EFDC /* BaseDBOperation.swift */,
+				2C8974F022EEF71200E9EFDC /* SaveNoteDBOperation.swift */,
+				2C8974F222EEF71F00E9EFDC /* LoadNotesDBOperation.swift */,
+				2C8974F422EEF72C00E9EFDC /* RemoveNoteDBOperation.swift */,
+			);
+			path = DBOperations;
+			sourceTree = "<group>";
+		};
+		2C8974F622EF02A000E9EFDC /* AggregatingOperations */ = {
+			isa = PBXGroup;
+			children = (
+				2C8974F722EF02F200E9EFDC /* SaveNoteOperation.swift */,
+				2C8974F922EF03BE00E9EFDC /* LoadNotesOperation.swift */,
+				2C8974FB22EF03E000E9EFDC /* RemoveNoteOperation.swift */,
+			);
+			path = AggregatingOperations;
+			sourceTree = "<group>";
+		};
 		2CC2432122DC7A190087296D /* Login */ = {
 			isa = PBXGroup;
 			children = (
@@ -138,6 +202,10 @@
 			isa = PBXGroup;
 			children = (
 				6B52070122BFD7D900FE6F38 /* Notes */,
+				6B52070922BFD7D900FE6F38 /* Assets.xcassets */,
+				6B52070B22BFD7D900FE6F38 /* LaunchScreen.storyboard */,
+				6B52070622BFD7D900FE6F38 /* Main.storyboard */,
+				6B52070222BFD7D900FE6F38 /* AppDelegate.swift */,
 				6B52071F22BFEFE100FE6F38 /* NotesTests */,
 				6B52070022BFD7D900FE6F38 /* Products */,
 				2F7CF16935B496EDC347902C /* Pods */,
@@ -157,9 +225,7 @@
 		6B52070122BFD7D900FE6F38 /* Notes */ = {
 			isa = PBXGroup;
 			children = (
-				2CC2432122DC7A190087296D /* Login */,
-				3275049C22C2C0E700ED2C10 /* Model */,
-				6B52070222BFD7D900FE6F38 /* AppDelegate.swift */,
+				2C7150BB22EF3C7100F07F0C /* Info.plist */,
 				6B52070422BFD7D900FE6F38 /* EditNoteViewController.swift */,
 				32662F1322E3441500272417 /* TableViewController.swift */,
 				32662F1722E3449300272417 /* TableViewCell.swift */,
@@ -167,10 +233,9 @@
 				2CBBC37322D7753D007486E0 /* ColorPicker.swift */,
 				3267DC8B22E4E24F009BEB5C /* ColorPickerViewController.swift */,
 				3267DC8D22E50125009BEB5C /* ScrollViewController.swift */,
-				6B52070622BFD7D900FE6F38 /* Main.storyboard */,
-				6B52070922BFD7D900FE6F38 /* Assets.xcassets */,
-				6B52070B22BFD7D900FE6F38 /* LaunchScreen.storyboard */,
-				6B52070E22BFD7D900FE6F38 /* Info.plist */,
+				2C8974E322EEEB9400E9EFDC /* Operations */,
+				2CC2432122DC7A190087296D /* Login */,
+				3275049C22C2C0E700ED2C10 /* Model */,
 			);
 			path = Notes;
 			sourceTree = "<group>";
@@ -372,14 +437,25 @@
 			buildActionMask = 2147483647;
 			files = (
 				3275047422C15C8400ED2C10 /* FileNotebook.swift in Sources */,
+				2C8974EB22EEF13E00E9EFDC /* SaveNotesBackendOperation.swift in Sources */,
+				2C8974F322EEF71F00E9EFDC /* LoadNotesDBOperation.swift in Sources */,
+				2C8974FC22EF03E000E9EFDC /* RemoveNoteOperation.swift in Sources */,
+				2C8974E522EEEBAE00E9EFDC /* BaseBackendOperation.swift in Sources */,
 				6B52070522BFD7D900FE6F38 /* EditNoteViewController.swift in Sources */,
+				2C8974FA22EF03BE00E9EFDC /* LoadNotesOperation.swift in Sources */,
 				2CC2431F22DC7A130087296D /* LoginVC.swift in Sources */,
 				6B52071722BFD95000FE6F38 /* NoteExtension.swift in Sources */,
 				3267DC8C22E4E24F009BEB5C /* ColorPickerViewController.swift in Sources */,
+				2C8974E922EEED9900E9EFDC /* AsyncOperation.swift in Sources */,
+				2C8974F822EF02F200E9EFDC /* SaveNoteOperation.swift in Sources */,
+				2C8974F522EEF72C00E9EFDC /* RemoveNoteDBOperation.swift in Sources */,
 				6B52070322BFD7D900FE6F38 /* AppDelegate.swift in Sources */,
 				32662F1922E3449300272417 /* TableViewCell.swift in Sources */,
 				3267DC8E22E50125009BEB5C /* ScrollViewController.swift in Sources */,
+				2C8974EF22EEF6FD00E9EFDC /* BaseDBOperation.swift in Sources */,
+				2C8974F122EEF71200E9EFDC /* SaveNoteDBOperation.swift in Sources */,
 				2CC2432422DC7BE50087296D /* HelloVC.swift in Sources */,
+				2C8974ED22EEF16900E9EFDC /* LoadNotesBackendOperation.swift in Sources */,
 				6B52071522BFD80E00FE6F38 /* Note.swift in Sources */,
 				32662F1422E3441500272417 /* TableViewController.swift in Sources */,
 				2CBBC37422D7753D007486E0 /* ColorPicker.swift in Sources */,
