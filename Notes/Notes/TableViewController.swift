@@ -12,9 +12,55 @@ class TableViewController: UITableViewController {
 
     var model: FileNotebook!
     let reuseIdentifier = "customNotesCell"
+    //очереди для выполнения
     let dbQueue = OperationQueue()
     let backendQueue = OperationQueue()
+    let agregateQueue = OperationQueue()
     
+    
+    //Opertaion func
+    private func loadNotes() {
+        let loadOperation = LoadNotesOperation(notebook: model, backendQueue: backendQueue, dbQueue: dbQueue)
+        loadOperation.completionBlock = {
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+            }
+        }
+        self.agregateQueue.addOperation(loadOperation)
+    }
+    
+    private func saveNotes(note: Note, model: FileNotebook) {
+        let saveOp = SaveNoteOperation(note: note, notebook: model, backendQueue: backendQueue, dbQueue: dbQueue)
+        saveOp.completionBlock = {
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+            }
+            
+        }
+        self.agregateQueue.addOperation(saveOp)
+    }
+    
+    private func updateNotes(noteToDel: Note, newNote: Note, model: FileNotebook) {
+        let remove = RemoveNoteOperation(note: noteToDel, notebook: model, backendQueue: backendQueue, dbQueue: dbQueue)
+        remove.completionBlock = {
+            let saveOp = SaveNoteOperation(note: newNote, notebook: self.model, backendQueue: self.backendQueue, dbQueue: self.dbQueue)
+            saveOp.completionBlock = {
+                DispatchQueue.main.async {
+                    self.tableView.reloadData()
+                }
+            }
+            self.agregateQueue.addOperation(saveOp)
+        }
+        self.agregateQueue.addOperation(remove)
+    }
+    
+    private func deleteNote(noteToDel: Note) {
+        let remove = RemoveNoteOperation(note: noteToDel, notebook: model, backendQueue: backendQueue, dbQueue: dbQueue)
+        self.agregateQueue.addOperation(remove)
+    }
+    
+    //пока не используется
+    //просто для заполнения пустой модели
     private func setupTestingContent(_ model: FileNotebook) {
         model.loadFromFile()
         if model.notes.isEmpty {
@@ -35,12 +81,13 @@ class TableViewController: UITableViewController {
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(createNewNote))
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Edit", style: .plain, target: self, action: #selector(makeEditable))
         
+        //так как операции зависят друг от друга, лучше использовать serial очередь
+        //ну и в concurrent возможно схватить краш
         backendQueue.maxConcurrentOperationCount = 1
         dbQueue.maxConcurrentOperationCount = 1
-        let loadOperation = LoadNotesOperation(notebook: model, backendQueue: backendQueue, dbQueue: dbQueue)
-        loadOperation.completionBlock = {
-            self.tableView.reloadData()
-        }
+        agregateQueue.maxConcurrentOperationCount = 1
+        //загружаем заметки через NSOperation
+        loadNotes()
     }
     
     @objc private func makeEditable() {
@@ -84,8 +131,8 @@ class TableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            let uid = model.notes[indexPath.row].uid
-            model.remove(with: uid)
+            let note = model.notes[indexPath.row]
+            deleteNote(noteToDel: note)
             self.tableView.deleteRows(at: [indexPath], with: .left)
         }
     }
@@ -119,12 +166,7 @@ class TableViewController: UITableViewController {
             for note in model.notes {
                 if note.uid == noteToEdit.uid {
                     if isNoteChange(note: note, new: newNote) {
-                        //model.remove(with: note.uid)
-                        //model.add(newNote)
-                        let remove = RemoveNoteOperation(note: note, notebook: model, backendQueue: backendQueue, dbQueue: dbQueue)
-                        remove.completionBlock = {
-                            let saveOp = SaveNoteOperation(note: newNote, notebook: self.model, backendQueue: self.backendQueue, dbQueue: self.dbQueue)
-                        }
+                        updateNotes(noteToDel: note, newNote: newNote, model: model)
                     } else {
                         return
                     }
@@ -132,7 +174,7 @@ class TableViewController: UITableViewController {
             }
         //в противном случае просто добавляем
         } else {
-            let saveOp = SaveNoteOperation(note: newNote, notebook: model, backendQueue: backendQueue, dbQueue: dbQueue)
+           saveNotes(note: newNote, model: model)
         }
     }
     

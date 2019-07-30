@@ -13,6 +13,7 @@ import UIKit
 //Поэтому у каждому квадрата задан owner. Через него можно сборосить цвет остальным
 protocol IColorsController: class {
     func unselectColors();
+    var selectedColor: UIColor { get set }
 }
 
 //Квадраты выбора цвета
@@ -69,6 +70,7 @@ protocol IColorsController: class {
     
     @objc func selectColor() {
         owner?.unselectColors()
+        owner?.selectedColor = self.backgroundColor ?? UIColor.white
         selected = true
     }
 }
@@ -135,15 +137,13 @@ class EditNoteViewController: UIViewController, IColorsController, selectedColor
         if let col = noteToEdit?.color {
             selectedColor = col
         }
+        noteName.text = noteToEdit?.title
+        noteText.text = noteToEdit?.content
 	}
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         configureRect()
-        //configureColorPicker()
-        //confige note
-        noteName.text = noteToEdit?.title
-        noteText.text = noteToEdit?.content
         if let date = noteToEdit?.selfDestructDate {
             destroyDateSwitch.isOn = true
             datePicker.isHidden = false

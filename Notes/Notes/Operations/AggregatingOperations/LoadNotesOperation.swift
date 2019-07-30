@@ -15,37 +15,41 @@ import CocoaLumberjack
 
 class LoadNotesOperation: AsyncOperation {
     
-    private var loadFromDb: LoadNotesDBOperation?
+    private var loadFromDb: LoadNotesDBOperation
     private let loadFromBackend: LoadNotesBackendOperation
     
-    private(set) var localNotes: [Note]?
+    private(set) var notes: [Note]?
+    private var dbNotes:[Note] = []
     
     init(notebook: FileNotebook, backendQueue: OperationQueue, dbQueue: OperationQueue) {
         loadFromBackend = LoadNotesBackendOperation()
+        loadFromDb = LoadNotesDBOperation(notebook:notebook)
         super.init()
-        
+
         loadFromBackend.completionBlock = {
             switch self.loadFromBackend.result! {
             case .success(let notes):
-                self.localNotes = notes
-            case .failure(let _):
+                self.notes = notes
+            case .failure(_):
                 DDLogError("Got error while loading notes from backend")
-                let loadFromDb = LoadNotesDBOperation(notebook:notebook)
-                loadFromDb.completionBlock = {
-                    if let notes = self.loadFromDb?.result {
-                        self.localNotes = notes
-                    }
-                }
-                self.loadFromDb = loadFromDb
-                self.addDependency(loadFromDb)
-                dbQueue.addOperation(loadFromDb)
             }
         }
+        loadFromDb.completionBlock = {
+            if let notes = self.loadFromDb.result {
+                self.dbNotes = notes
+            }
+        }
+        self.addDependency(loadFromDb)
         self.addDependency(loadFromBackend)
         backendQueue.addOperation(loadFromBackend)
+        dbQueue.addOperation(loadFromDb)
     }
     
     override func main() {
+        //если нам не прилетели заметки, берем их локально
+        if notes == nil {
+            notes = dbNotes
+        }
         finish()
     }
     

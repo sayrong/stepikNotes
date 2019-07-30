@@ -23,19 +23,17 @@ class SaveNoteOperation: AsyncOperation {
          dbQueue: OperationQueue) {
         self.note = note
         self.notebook = notebook
-        
         saveToDb = SaveNoteDBOperation(note: note, notebook: notebook)
-        
         super.init()
-        
+        let saveToBackend = SaveNotesBackendOperation(notes: notebook.notes)
+        self.saveToBackend = saveToBackend
+        //после окончания saveDb ставим в очередь saveToBackend
         saveToDb.completionBlock = {
-            let saveToBackend = SaveNotesBackendOperation(notes: notebook.notes)
-            self.saveToBackend = saveToBackend
-            self.addDependency(saveToBackend)
             backendQueue.addOperation(saveToBackend)
         }
-        
-        addDependency(saveToDb)
+        //наша операция не будет выполнена, пока две вложенных операции не закончены
+        self.addDependency(saveToDb)
+        self.addDependency(saveToBackend)
         dbQueue.addOperation(saveToDb)
     }
     
