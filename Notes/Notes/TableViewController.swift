@@ -17,6 +17,7 @@ class TableViewController: UITableViewController {
     let backendQueue = OperationQueue()
     let agregateQueue = OperationQueue()
     
+    private var token: String = ""
     
     //Opertaion func
     private func loadNotes() {
@@ -88,6 +89,9 @@ class TableViewController: UITableViewController {
         agregateQueue.maxConcurrentOperationCount = 1
         //загружаем заметки через NSOperation
         loadNotes()
+        let requestTokenViewController = AuthViewController()
+        //requestTokenViewController.delegate = self
+        present(requestTokenViewController, animated: false, completion: nil)
     }
     
     @objc private func makeEditable() {
@@ -186,4 +190,11 @@ class TableViewController: UITableViewController {
         return changedTitle || changedContent || changedDate || changedColor
     }
 
+}
+
+extension TableViewController: AuthViewControllerDelegate {
+    func handleTokenChanged(token: String) {
+        self.token = token
+        print("New token - \(token)")
+    }
 }
