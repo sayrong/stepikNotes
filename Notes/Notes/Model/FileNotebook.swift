@@ -51,6 +51,8 @@ class FileNotebook {
         return data
     }
     
+    
+    
     public func saveToFile() {
         var result = false
         guard let path = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first else {
@@ -67,6 +69,39 @@ class FileNotebook {
             DDLogInfo("File \(notesDir.path) saved")
         }
         
+    }
+    
+    static func convertToJson(notes: [Note]) -> Data? {
+        var data: Data? = nil
+        var result = [[String:Any]]()
+        for i in notes {
+            result.append(i.json)
+        }
+        do {
+            data = try JSONSerialization.data(withJSONObject: result, options: .prettyPrinted)
+        } catch {
+            DDLogError(error.localizedDescription)
+        }
+        return data
+    }
+    
+    
+    static func extractFromString(string: String) -> [Note]? {
+        var result = [Note]()
+        //в случае пустой базы - пустая строка
+        if string.isEmpty {
+            return result
+        }
+        guard let data = string.data(using: .utf8) else { return nil }
+        if let arrayJson = try? JSONSerialization.jsonObject(with: data, options: []) as? [[String:Any]] {
+            for i in arrayJson {
+                if let tmp = Note.parse(json: i) {
+                    result.append(tmp)
+                }
+            }
+            return result
+        }
+        return nil
     }
     
     private func extractFromFile(fileUrl: URL) -> [[String:Any]]? {

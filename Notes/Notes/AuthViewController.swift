@@ -11,6 +11,7 @@ import WebKit
 
 protocol AuthViewControllerDelegate: class {
     func handleTokenChanged(token: String)
+    func loadNotes()
 }
 
 class AuthViewController: UIViewController {
@@ -19,6 +20,7 @@ class AuthViewController: UIViewController {
     
     private let webView = WKWebView()
     private let clientId = "586d93a13b4a4a7df654"
+    private let clientSecret = "6a736df8d43c7aac352ef1b93378f1b3aab8cda2"
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -46,7 +48,6 @@ class AuthViewController: UIViewController {
         guard var urlComponents = URLComponents(string: "https://github.com/login/oauth/authorize") else { return nil }
         
         urlComponents.queryItems = [
-            URLQueryItem(name: "response_type", value: "token"),
             URLQueryItem(name: "client_id", value: "\(clientId)"),
             URLQueryItem(name: "scope", value: "gist")
         ]
@@ -56,8 +57,49 @@ class AuthViewController: UIViewController {
         return URLRequest(url: url)
     }
     
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        delegate?.loadNotes()
+    }
+    
+    func getToken(code: String, completion: @escaping (String)->()){
+        guard var urlComponents = URLComponents(string: "https://github.com/login/oauth/access_token") else { return }
+        urlComponents.queryItems = [
+            URLQueryItem(name: "response_type", value: "token"),
+            URLQueryItem(name: "client_id", value: "\(clientId)"),
+            URLQueryItem(name: "client_secret", value: clientSecret),
+            URLQueryItem(name: "code", value: code)
+        ]
+        guard let url = urlComponents.url else { return }
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        URLSession.shared.dataTask(with: request) { (data, response, error) in
+            if let response = response as? HTTPURLResponse {
+                switch response.statusCode {
+                case 200..<300:
+                    print("Success")
+                    if let data = data {
+                        if let string = String(data: data, encoding: .utf8) {
+                            if let accessTokenBlock = string.components(separatedBy: "&").first {
+                                if accessTokenBlock.contains("access_token") {
+                                    let token = accessTokenBlock.components(separatedBy: "=")
+                                    if token.count == 2 {
+                                        return completion(token[1])
+                                    }
+                                }
+                            }
+                        }
+                    }
+                default:
+                    print("Status: \(response.statusCode)")
+                }
+            }
+        }.resume()
+    }
     
 }
+
+
 
 
 extension AuthViewController: WKNavigationDelegate {
@@ -67,10 +109,14 @@ extension AuthViewController: WKNavigationDelegate {
             let targetString = url.absoluteString.replacingOccurrences(of: "#", with: "?")
             guard let components = URLComponents(string: targetString) else { return }
             
-            if let token = components.queryItems?.first(where: { $0.name == "code" })?.value {
-                delegate?.handleTokenChanged(token: token)
+            if let code = components.queryItems?.first(where: { $0.name == "code" })?.value {
+                getToken(code: code) { token in
+                    self.delegate?.handleTokenChanged(token: token)
+                    DispatchQueue.main.async {
+                        self.dismiss(animated: true, completion: nil)
+                    }
+                }
             }
-            dismiss(animated: true, completion: nil)
         }
         defer {
             decisionHandler(.allow)

@@ -17,18 +17,7 @@ class TableViewController: UITableViewController {
     let backendQueue = OperationQueue()
     let agregateQueue = OperationQueue()
     
-    private var token: String = ""
     
-    //Opertaion func
-    private func loadNotes() {
-        let loadOperation = LoadNotesOperation(notebook: model, backendQueue: backendQueue, dbQueue: dbQueue)
-        loadOperation.completionBlock = {
-            DispatchQueue.main.async {
-                self.tableView.reloadData()
-            }
-        }
-        self.agregateQueue.addOperation(loadOperation)
-    }
     
     private func saveNotes(note: Note, model: FileNotebook) {
         let saveOp = SaveNoteOperation(note: note, notebook: model, backendQueue: backendQueue, dbQueue: dbQueue)
@@ -87,11 +76,12 @@ class TableViewController: UITableViewController {
         backendQueue.maxConcurrentOperationCount = 1
         dbQueue.maxConcurrentOperationCount = 1
         agregateQueue.maxConcurrentOperationCount = 1
-        //загружаем заметки через NSOperation
-        loadNotes()
         let requestTokenViewController = AuthViewController()
-        //requestTokenViewController.delegate = self
-        present(requestTokenViewController, animated: false, completion: nil)
+        requestTokenViewController.delegate = self
+        present(requestTokenViewController, animated: false)
+        //загружаем заметки через NSOperation
+        
+        
     }
     
     @objc private func makeEditable() {
@@ -194,7 +184,19 @@ class TableViewController: UITableViewController {
 
 extension TableViewController: AuthViewControllerDelegate {
     func handleTokenChanged(token: String) {
-        self.token = token
+        NetworkManager.shared().token = token
         print("New token - \(token)")
     }
+    
+    //Opertaion func
+    func loadNotes() {
+        let loadOperation = LoadNotesOperation(notebook: model, backendQueue: backendQueue, dbQueue: dbQueue)
+        loadOperation.completionBlock = {
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+            }
+        }
+        self.agregateQueue.addOperation(loadOperation)
+    }
+    
 }

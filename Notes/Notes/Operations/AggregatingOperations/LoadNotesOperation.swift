@@ -20,10 +20,15 @@ class LoadNotesOperation: AsyncOperation {
     
     private(set) var notes: [Note]?
     private var dbNotes:[Note] = []
+    private var model: FileNotebook
+    let group = DispatchGroup()
     
     init(notebook: FileNotebook, backendQueue: OperationQueue, dbQueue: OperationQueue) {
+        group.enter()
+        group.enter()
         loadFromBackend = LoadNotesBackendOperation()
         loadFromDb = LoadNotesDBOperation(notebook:notebook)
+        model = notebook
         super.init()
 
         loadFromBackend.completionBlock = {
@@ -33,11 +38,13 @@ class LoadNotesOperation: AsyncOperation {
             case .failure(_):
                 DDLogError("Got error while loading notes from backend")
             }
+            self.group.leave()
         }
         loadFromDb.completionBlock = {
             if let notes = self.loadFromDb.result {
                 self.dbNotes = notes
             }
+            self.group.leave()
         }
         self.addDependency(loadFromDb)
         self.addDependency(loadFromBackend)
@@ -47,6 +54,7 @@ class LoadNotesOperation: AsyncOperation {
     
     override func main() {
         //если нам не прилетели заметки, берем их локально
+        group.wait()
         if notes == nil {
             notes = dbNotes
         }
