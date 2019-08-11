@@ -11,6 +11,7 @@ import Foundation
 enum NetworkError {
     case unreachable
     case baseNotFound
+    case dataConvertingError
 }
 
 enum SaveNotesBackendResult {
@@ -27,26 +28,31 @@ class SaveNotesBackendOperation: BaseBackendOperation {
         super.init()
     }
     
+    private func prepareContent() -> String? {
+        if let json = FileNotebook.convertToJson(notes: notes) {
+            if let str = String(data: json, encoding: .utf8) {
+                return str
+            }
+        }
+        return nil
+    }
+    
     override func main() {
         let manager = NetworkManager.shared()
-        if manager.idGistBase == nil {
-            if let json = FileNotebook.convertToJson(notes: notes) {
-                if let str = String(data: json, encoding: .utf8) {
-                    manager.uploadGist(content: str) { (status) in
-                        if status {
-                            self.result = .success
-                            self.finish()
-                        } else {
-                            self.result = .failure(.unreachable)
-                        }
-                        
-                    }
-                }
-                
-            }
-            
+        
+        guard let content = prepareContent() else {
+            result = .failure(.dataConvertingError)
+            finish()
+            return
         }
         
-        
+        manager.uploadGist(content: content) { (status) in
+            if status {
+                self.result = .success
+            } else {
+                self.result = .failure(.unreachable)
+            }
+            self.finish()
+        }
     }
 }

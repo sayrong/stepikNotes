@@ -8,9 +8,10 @@
 
 import UIKit
 import WebKit
+import CocoaLumberjack
 
 protocol AuthViewControllerDelegate: class {
-    func handleTokenChanged(token: String)
+    func handleTokenChanged(token: String?)
     func loadNotes()
 }
 
@@ -62,7 +63,25 @@ class AuthViewController: UIViewController {
         delegate?.loadNotes()
     }
     
-    func getToken(code: String, completion: @escaping (String)->()){
+    //Приходит срока вида access_token=e72e16c7e42f292c6912e7710c838347ae178b4a&token_type=bearer
+    //Т.к. мы не указали application/json
+    func parseAnswer(data: Data?) -> String? {
+        if let data = data {
+            if let string = String(data: data, encoding: .utf8) {
+                if let accessTokenBlock = string.components(separatedBy: "&").first {
+                    if accessTokenBlock.contains("access_token") {
+                        let token = accessTokenBlock.components(separatedBy: "=")
+                        if token.count == 2 {
+                            return token[1]
+                        }
+                    }
+                }
+            }
+        }
+        return nil
+    }
+    
+    func getToken(code: String, completion: @escaping (String?)->()){
         guard var urlComponents = URLComponents(string: "https://github.com/login/oauth/access_token") else { return }
         urlComponents.queryItems = [
             URLQueryItem(name: "response_type", value: "token"),
@@ -78,18 +97,7 @@ class AuthViewController: UIViewController {
                 switch response.statusCode {
                 case 200..<300:
                     print("Success")
-                    if let data = data {
-                        if let string = String(data: data, encoding: .utf8) {
-                            if let accessTokenBlock = string.components(separatedBy: "&").first {
-                                if accessTokenBlock.contains("access_token") {
-                                    let token = accessTokenBlock.components(separatedBy: "=")
-                                    if token.count == 2 {
-                                        return completion(token[1])
-                                    }
-                                }
-                            }
-                        }
-                    }
+                    completion(self.parseAnswer(data: data))
                 default:
                     print("Status: \(response.statusCode)")
                 }
@@ -112,9 +120,6 @@ extension AuthViewController: WKNavigationDelegate {
             if let code = components.queryItems?.first(where: { $0.name == "code" })?.value {
                 getToken(code: code) { token in
                     self.delegate?.handleTokenChanged(token: token)
-                    DispatchQueue.main.async {
-                        self.dismiss(animated: true, completion: nil)
-                    }
                 }
             }
         }
@@ -122,6 +127,17 @@ extension AuthViewController: WKNavigationDelegate {
             decisionHandler(.allow)
         }
     }
+    
+    //В случаем если сеть не доступна, или произошла какая-либо ошибка скрываем окно
+    //Также сюда попадаем при получении scheme notes, т.к wkwebview не знаем как это обработать
+    func webView(_ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: Error) {
+
+        DDLogError(error.localizedDescription)
+        DispatchQueue.main.async {
+            self.dismiss(animated: true, completion: nil)
+        }
+    }
+
 }
 
 private let scheme = "notes" // схема для callback

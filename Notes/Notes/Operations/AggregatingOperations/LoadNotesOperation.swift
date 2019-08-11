@@ -15,48 +15,53 @@ import CocoaLumberjack
 
 class LoadNotesOperation: AsyncOperation {
     
+    //Две операции зашрузка с веба и локально
     private var loadFromDb: LoadNotesDBOperation
     private let loadFromBackend: LoadNotesBackendOperation
     
     private(set) var notes: [Note]?
-    private var dbNotes:[Note] = []
     private var model: FileNotebook
+    //Для синхрониизации потоков.
+    //Оказывается addDependency не ждет, пока выполниться completionBlock у операции
     let group = DispatchGroup()
     
     init(notebook: FileNotebook, backendQueue: OperationQueue, dbQueue: OperationQueue) {
-        group.enter()
+        //Инициализация полей
         group.enter()
         loadFromBackend = LoadNotesBackendOperation()
         loadFromDb = LoadNotesDBOperation(notebook:notebook)
         model = notebook
         super.init()
-
+        //Если загрузка с сервера выполнилась удачно, то забираем полученные данные
+        //Если ошибка загружаем заметки локально
         loadFromBackend.completionBlock = {
             switch self.loadFromBackend.result! {
             case .success(let notes):
                 self.notes = notes
             case .failure(_):
+                self.group.enter()
                 DDLogError("Got error while loading notes from backend")
+                dbQueue.addOperation(self.loadFromDb)
             }
             self.group.leave()
         }
         loadFromDb.completionBlock = {
             if let notes = self.loadFromDb.result {
-                self.dbNotes = notes
+                self.notes = notes
             }
             self.group.leave()
         }
-        self.addDependency(loadFromDb)
         self.addDependency(loadFromBackend)
         backendQueue.addOperation(loadFromBackend)
-        dbQueue.addOperation(loadFromDb)
     }
     
     override func main() {
-        //если нам не прилетели заметки, берем их локально
+        //После wait в параметре notes лежат заметки
         group.wait()
-        if notes == nil {
-            notes = dbNotes
+        if let notes = notes {
+           model.loadNewNotes(newNotes: notes)
+        } else {
+            DDLogError("Notes is nil in LoadOperation")
         }
         finish()
     }

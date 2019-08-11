@@ -7,7 +7,7 @@
 //
 
 import Foundation
-
+import CocoaLumberjack
 
 struct Gists: Codable {
     //Дата создания
@@ -80,8 +80,15 @@ class NetworkManager {
     var token = ""
     var idGistBase: String?
     
+    //Если известен id нашей базы, запрашиваем сразу ее
+    //В противном случае получаем все наши гисты
     func loadGistsFromApi(completion: @escaping ([Gists]?)->()) {
-        let components = URLComponents(string: "https://api.github.com/users/sayrong/gists")
+        guard !token.isEmpty else {
+            completion(nil)
+            return
+        }
+        let urlComponent = idGistBase == nil ? "" : "\\" + idGistBase!
+        let components = URLComponents(string: "https://api.github.com/gists" + urlComponent)
         guard let url = components?.url else { return }
         var request = URLRequest(url: url)
         request.setValue("token \(token)", forHTTPHeaderField: "Authorization")
@@ -89,6 +96,7 @@ class NetworkManager {
         let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
             guard error == nil else {
                 print(error!.localizedDescription)
+                completion(nil)
                 return
             }
             if let response = response as? HTTPURLResponse {
@@ -96,22 +104,24 @@ class NetworkManager {
                 case 200..<300:
                     break
                 default:
-                    print("Status: \(response.statusCode)")
+                    print("Status: \(response.statusCode) - loadGistsFromApi")
+                    completion(nil)
+                    return
                 }
             }
-            guard let data = data else { return }
-            let res = Gists.parseResponse(data: data)
-            if let res = res {
-                completion(res)
+            guard let data = data else {
+                DDLogError("Nil data in loadGistsFromApi")
+                completion(nil)
+                return
             }
+            let res = Gists.parseResponse(data: data)
+            completion(res)
         }
         task.resume()
     }
     
-    func uploadGist(content: String, completion: @escaping (Bool)->()) {
-        
-        var isOk: Bool = false
-        
+    //Подготовка контента для базы
+    private func prepareContent(content: String) -> Data? {
         let gist = Gists(description: "Stepic db for application Notes", filename: "ios-course-notes-db", content: content)
         
         var data: Data
@@ -119,14 +129,27 @@ class NetworkManager {
             data = try JSONEncoder().encode(gist)
         } catch {
             print(error.localizedDescription)
+            return nil
+        }
+        return data
+    }
+    
+    //Первичная загрузка базы или изменение
+    func uploadGist(content: String, completion: @escaping (Bool)->()) {
+        
+        var isOk: Bool = false
+        guard !token.isEmpty else {
+            completion(isOk)
             return
         }
+        guard let data = prepareContent(content: content) else { return }
         
-        print(String(data: data, encoding: .utf8)!)
-        
-        guard let url = URL(string: "https://api.github.com/gists") else { return }
+        //print(String(data: data, encoding: .utf8)!)
+        let urlComponent = idGistBase == nil ? "" : "\\" + idGistBase!
+        let strUlr = "https://api.github.com/gists" + urlComponent
+        guard let url = URL(string: strUlr) else { return }
         var request = URLRequest(url: url)
-        request.httpMethod = "POST"
+        request.httpMethod = idGistBase == nil ? "POST" : "PATCH"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         request.setValue("token \(token)", forHTTPHeaderField: "Authorization")
         request.httpBody = data
@@ -134,8 +157,11 @@ class NetworkManager {
             if let response = response as? HTTPURLResponse {
                 switch response.statusCode {
                 case 200..<300:
-                    print("Success")
                     isOk = true
+                    if self.idGistBase == nil {
+                        let ulr = URL(string: response.allHeaderFields["Location"] as! String)
+                        self.idGistBase = url.lastPathComponent
+                    }
                 default:
                     print("Status: \(response.statusCode)")
                 }
@@ -143,5 +169,6 @@ class NetworkManager {
             completion(isOk)
         }.resume()
     }
+    
     
 }

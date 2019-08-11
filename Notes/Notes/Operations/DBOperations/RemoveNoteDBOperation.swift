@@ -8,7 +8,7 @@
 
 import Foundation
 
-//RemoveNoteDBOperation принимает на вход заметку (ну или только ее UID, тут не важно) и экземляр FileNotebook.
+//RemoveNoteDBOperation принимает на вход заметку и экземляр FileNotebook.
 //Удаляет эту заметку из FileNotebook.
 
 class RemoveNoteDBOperation: BaseDBOperation {

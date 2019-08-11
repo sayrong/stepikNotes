@@ -17,7 +17,8 @@ class TableViewController: UITableViewController {
     let backendQueue = OperationQueue()
     let agregateQueue = OperationQueue()
     
-    
+    //костыль для первого запуска и показа Auth
+    private var first = true
     
     private func saveNotes(note: Note, model: FileNotebook) {
         let saveOp = SaveNoteOperation(note: note, notebook: model, backendQueue: backendQueue, dbQueue: dbQueue)
@@ -71,18 +72,23 @@ class TableViewController: UITableViewController {
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(createNewNote))
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Edit", style: .plain, target: self, action: #selector(makeEditable))
         
-        //так как операции зависят друг от друга, лучше использовать serial очередь
-        //ну и в concurrent возможно схватить краш
-        backendQueue.maxConcurrentOperationCount = 1
-        dbQueue.maxConcurrentOperationCount = 1
-        agregateQueue.maxConcurrentOperationCount = 1
-        let requestTokenViewController = AuthViewController()
-        requestTokenViewController.delegate = self
-        present(requestTokenViewController, animated: false)
-        //загружаем заметки через NSOperation
-        
-        
     }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        //запрашиваем токен
+        if first {
+            if NetworkManager.shared().token.isEmpty {
+                let requestTokenViewController = AuthViewController()
+                requestTokenViewController.delegate = self
+                present(requestTokenViewController, animated: true)
+            }
+        }
+        first = false
+    }
+    
+    
     
     @objc private func makeEditable() {
         self.tableView.isEditing = !tableView.isEditing
@@ -95,12 +101,10 @@ class TableViewController: UITableViewController {
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
         return 1
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
         return model.notes.count
     }
 
@@ -126,8 +130,15 @@ class TableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             let note = model.notes[indexPath.row]
-            deleteNote(noteToDel: note)
-            self.tableView.deleteRows(at: [indexPath], with: .left)
+            let remove = RemoveNoteOperation(note: note, notebook: model, backendQueue: backendQueue, dbQueue: dbQueue)
+            //должно быть консистентное состояние иначе можем словить краш
+            //сначала удаляем данные, потом удаляем и таблицы
+            remove.completionBlock = {
+                DispatchQueue.main.async {
+                    self.tableView.deleteRows(at: [indexPath], with: .left)
+                }
+            }
+            self.agregateQueue.addOperation(remove)
         }
     }
     
@@ -183,7 +194,11 @@ class TableViewController: UITableViewController {
 }
 
 extension TableViewController: AuthViewControllerDelegate {
-    func handleTokenChanged(token: String) {
+    func handleTokenChanged(token: String?) {
+        guard let token = token else {
+            print("Problem with token")
+            return
+        }
         NetworkManager.shared().token = token
         print("New token - \(token)")
     }

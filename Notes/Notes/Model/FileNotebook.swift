@@ -119,26 +119,42 @@ class FileNotebook {
         return nil
     }
     
-    public func loadFromFile() {
+    //Возвращает заметки из файла
+    public func loadFromFile() -> [Note] {
+        var result = [Note]()
         
         guard let path = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first else {
             DDLogError("Error get cache dir")
-            return
+            return result
         }
         let notesDir = path.appendingPathComponent(filename)
         if FileManager.default.fileExists(atPath: notesDir.path) {
             if let arrayJson = extractFromFile(fileUrl: notesDir) {
-                notes.removeAll()
                 for i in arrayJson {
                     if let tmp = Note.parse(json: i) {
-                        notes.append(tmp)
+                        result.append(tmp)
                     }
                 }
             }
         } else {
             DDLogError("File \(notesDir.path) not found")
         }
-        
+        return result
+    }
+    
+    //Сраузу загружает заметки из файла в модель
+    public func loadFromFileInModel() {
+        notes.removeAll()
+        for tmp in self.loadFromFile() {
+            notes.append(tmp)
+        }
+    }
+    
+    public func loadNewNotes(newNotes: [Note]) {
+        notes.removeAll()
+        for i in newNotes {
+            notes.append(i)
+        }
     }
     
     
