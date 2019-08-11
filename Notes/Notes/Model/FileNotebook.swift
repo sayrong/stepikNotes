@@ -66,7 +66,7 @@ class FileNotebook {
         if result == false {
             DDLogError("Some error while creating file")
         } else {
-            DDLogInfo("File \(notesDir.path) saved")
+            DDLogInfo("File saved")
         }
         
     }
@@ -137,7 +137,7 @@ class FileNotebook {
                 }
             }
         } else {
-            DDLogError("File \(notesDir.path) not found")
+            DDLogError("Local file with notes not found")
         }
         return result
     }

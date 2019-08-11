@@ -51,7 +51,6 @@ class LoadNotesOperation: AsyncOperation {
             }
             self.group.leave()
         }
-        self.addDependency(loadFromBackend)
         backendQueue.addOperation(loadFromBackend)
     }
     
@@ -64,6 +63,7 @@ class LoadNotesOperation: AsyncOperation {
             DDLogError("Notes is nil in LoadOperation")
         }
         finish()
+        print("LoadNotesOperation - done")
     }
     
 }

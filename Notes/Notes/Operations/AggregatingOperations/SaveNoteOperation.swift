@@ -31,6 +31,7 @@ class SaveNoteOperation: AsyncOperation {
                     self.result = false
                 }
                 self.finish()
+                print("SaveNoteOperation - done")
             }
             backendQueue.addOperation(saveToBackend)
         }

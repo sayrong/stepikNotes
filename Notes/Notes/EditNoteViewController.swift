@@ -139,6 +139,8 @@ class EditNoteViewController: UIViewController, IColorsController, selectedColor
         }
         noteName.text = noteToEdit?.title
         noteText.text = noteToEdit?.content
+        noteText.layer.borderColor = UIColor.black.cgColor
+        noteText.layer.borderWidth = 0.5
 	}
     
     override func viewWillAppear(_ animated: Bool) {

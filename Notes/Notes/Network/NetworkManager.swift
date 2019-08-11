@@ -143,9 +143,7 @@ class NetworkManager {
             return
         }
         guard let data = prepareContent(content: content) else { return }
-        
-        //print(String(data: data, encoding: .utf8)!)
-        let urlComponent = idGistBase == nil ? "" : "\\" + idGistBase!
+        let urlComponent = idGistBase == nil ? "" : "/" + idGistBase!
         let strUlr = "https://api.github.com/gists" + urlComponent
         guard let url = URL(string: strUlr) else { return }
         var request = URLRequest(url: url)
@@ -154,16 +152,23 @@ class NetworkManager {
         request.setValue("token \(token)", forHTTPHeaderField: "Authorization")
         request.httpBody = data
         URLSession.shared.dataTask(with: request) { (data, response, error) in
+            guard error == nil else {
+                print(error!.localizedDescription)
+                completion(isOk)
+                return
+            }
             if let response = response as? HTTPURLResponse {
                 switch response.statusCode {
                 case 200..<300:
                     isOk = true
+                    //на случай если нету базы и мы делаем POST
                     if self.idGistBase == nil {
-                        let ulr = URL(string: response.allHeaderFields["Location"] as! String)
-                        self.idGistBase = url.lastPathComponent
+                        let urlWithId = URL(string: response.allHeaderFields["Location"] as! String)
+                        self.idGistBase = urlWithId?.lastPathComponent
                     }
                 default:
                     print("Status: \(response.statusCode)")
+                    completion(isOk)
                 }
             }
             completion(isOk)
