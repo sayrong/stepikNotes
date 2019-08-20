@@ -12,14 +12,14 @@ class SaveNoteDBOperation: BaseDBOperation {
     private let note: Note
     
     init(note: Note,
-         notebook: FileNotebook) {
+         notebook: NoteStorageProtocol) {
         self.note = note
         super.init(notebook: notebook)
     }
     
     override func main() {
         notebook.add(note)
-        notebook.saveToFile()
+        notebook.save()
         finish()
     }
 }

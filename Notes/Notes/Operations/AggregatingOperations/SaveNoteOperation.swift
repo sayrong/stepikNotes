@@ -14,7 +14,7 @@ class SaveNoteOperation: AsyncOperation {
     private let dbQueue: OperationQueue
     private(set) var result: Bool? = false
     
-    init(note: Note, notebook: FileNotebook, backendQueue: OperationQueue,
+    init(note: Note, notebook: NoteStorageProtocol, backendQueue: OperationQueue,
          dbQueue: OperationQueue) {
         self.dbQueue = dbQueue
         saveToDb = SaveNoteDBOperation(note: note, notebook: notebook)

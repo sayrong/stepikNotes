@@ -8,12 +8,13 @@
 
 import UIKit
 import CocoaLumberjack
+import CoreData
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
 	var window: UIWindow?
-
+    var container: NSPersistentContainer!
 
 	func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
 		// Override point for customization after application launch.
@@ -24,9 +25,30 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         fileLogger.rollingFrequency = 60 * 60 * 24 // 24 hours
         fileLogger.logFileManager.maximumNumberOfLogFiles = 7
         DDLog.add(fileLogger)
-		
+        createContainer { (container) in
+            self.container = container
+            if let tb = self.window?.rootViewController as? UITabBarController,
+                let nc =  tb.viewControllers?.first as? UINavigationController,
+                let vc = nc.topViewController as? TableViewController
+            {
+                vc.model = DatabaseNoteBook(mainContext: container.viewContext, bgContext: container.newBackgroundContext())
+            }
+        }
+
         return true
 	}
+    
+    func createContainer(completion: @escaping (NSPersistentContainer) -> ()) {
+        let container = NSPersistentContainer(name: "Model")
+        container.loadPersistentStores { (_, error) in
+            guard error == nil else {
+                fatalError("Failed to load store")
+            }
+            DispatchQueue.main.async {
+                completion(container)
+            }
+        }
+    }
 
 	func applicationWillResignActive(_ application: UIApplication) {
 		// Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.

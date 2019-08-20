@@ -20,12 +20,12 @@ class LoadNotesOperation: AsyncOperation {
     private let loadFromBackend: LoadNotesBackendOperation
     
     private(set) var notes: [Note]?
-    private var model: FileNotebook
+    private var model: NoteStorageProtocol
     //Для синхрониизации потоков.
     //Оказывается addDependency не ждет, пока выполниться completionBlock у операции
     let group = DispatchGroup()
     
-    init(notebook: FileNotebook, backendQueue: OperationQueue, dbQueue: OperationQueue) {
+    init(notebook: NoteStorageProtocol, backendQueue: OperationQueue, dbQueue: OperationQueue) {
         //Инициализация полей
         group.enter()
         loadFromBackend = LoadNotesBackendOperation()

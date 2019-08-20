@@ -9,7 +9,16 @@
 import Foundation
 import CocoaLumberjack
 
-class FileNotebook {
+protocol NoteStorageProtocol: class{
+    var notes: [Note] { get }
+    func add(_ note: Note)
+    func remove(with uid: String)
+    func save()
+    func loadFromStorage() -> [Note]
+    func loadNewNotes(newNotes: [Note])
+}
+
+class FileNotebook: NoteStorageProtocol {
     
     private(set) var notes = [Note]()
     var filename: String
@@ -53,7 +62,7 @@ class FileNotebook {
     
     
     
-    public func saveToFile() {
+    public func save() {
         var result = false
         guard let path = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first else {
             DDLogError("Error get cache dir")
@@ -120,7 +129,7 @@ class FileNotebook {
     }
     
     //Возвращает заметки из файла
-    public func loadFromFile() -> [Note] {
+    public func loadFromStorage() -> [Note] {
         var result = [Note]()
         
         guard let path = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first else {
@@ -140,14 +149,6 @@ class FileNotebook {
             DDLogError("Local file with notes not found")
         }
         return result
-    }
-    
-    //Сраузу загружает заметки из файла в модель
-    public func loadFromFileInModel() {
-        notes.removeAll()
-        for tmp in self.loadFromFile() {
-            notes.append(tmp)
-        }
     }
     
     public func loadNewNotes(newNotes: [Note]) {

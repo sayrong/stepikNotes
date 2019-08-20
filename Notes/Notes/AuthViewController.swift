@@ -20,8 +20,8 @@ class AuthViewController: UIViewController {
     weak var delegate: AuthViewControllerDelegate?
     
     private let webView = WKWebView()
-    private let clientId = "586d93a13b4a4a7df654"
-    private let clientSecret = "6a736df8d43c7aac352ef1b93378f1b3aab8cda2"
+    private let clientId = ""
+    private let clientSecret = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()

@@ -7,20 +7,27 @@
 //
 
 import UIKit
+import CoreData
 
 class TableViewController: UITableViewController {
 
-    var model: FileNotebook!
+    var model: NoteStorageProtocol? {
+        didSet {
+            self.tableView.reloadData()
+        }
+    }
+    
     let reuseIdentifier = "customNotesCell"
     //очереди для выполнения
     let dbQueue = OperationQueue()
     let backendQueue = OperationQueue()
     let agregateQueue = OperationQueue()
     
+    
     //костыль для первого запуска и показа Auth
     private var first = true
     
-    private func saveNotes(note: Note, model: FileNotebook) {
+    private func saveNotes(note: Note, model: NoteStorageProtocol) {
         let saveOp = SaveNoteOperation(note: note, notebook: model, backendQueue: backendQueue, dbQueue: dbQueue)
         saveOp.completionBlock = {
             DispatchQueue.main.async {
@@ -31,10 +38,10 @@ class TableViewController: UITableViewController {
         self.agregateQueue.addOperation(saveOp)
     }
     
-    private func updateNotes(noteToDel: Note, newNote: Note, model: FileNotebook) {
+    private func updateNotes(noteToDel: Note, newNote: Note, model: NoteStorageProtocol) {
         let remove = RemoveNoteOperation(note: noteToDel, notebook: model, backendQueue: backendQueue, dbQueue: dbQueue)
         remove.completionBlock = {
-            let saveOp = SaveNoteOperation(note: newNote, notebook: self.model, backendQueue: self.backendQueue, dbQueue: self.dbQueue)
+            let saveOp = SaveNoteOperation(note: newNote, notebook: model, backendQueue: self.backendQueue, dbQueue: self.dbQueue)
             saveOp.completionBlock = {
                 DispatchQueue.main.async {
                     self.tableView.reloadData()
@@ -46,6 +53,7 @@ class TableViewController: UITableViewController {
     }
     
     private func deleteNote(noteToDel: Note) {
+        guard let model = model else { return }
         let remove = RemoveNoteOperation(note: noteToDel, notebook: model, backendQueue: backendQueue, dbQueue: dbQueue)
         self.agregateQueue.addOperation(remove)
     }
@@ -53,21 +61,21 @@ class TableViewController: UITableViewController {
     //пока не используется
     //просто для заполнения пустой модели
     private func setupTestingContent(_ model: FileNotebook) {
-        model.loadFromFile()
+        model.loadFromStorage()
         if model.notes.isEmpty {
             model.add(Note(uid: UUID().uuidString, title: "Последние задание на курсе iOS начинаем", content: "Было довольно интересно. Но курс определенно не рассчитан на новичков. Больше всего запомнилось задание с ColorPicker. Оно было довольно сложное, но интересное.", color: UIColor.red, importance: .important, destructDate: Date(timeIntervalSinceNow: 60 * 60 * 24 + 1)))
             model.add(Note(uid: UUID().uuidString, title: "Погода в Москве", content: "В последнее время не переставая льют дожди. Это может быть даже и хорошо, так как особо не тянет на улицу гулять. Можно посвятить время домашних делам.", color: UIColor.white, importance: .normal, destructDate: nil))
             model.add(Note(uid: UUID().uuidString, title: "Как переехать в Silicon valley", content: "Именно такой ролик я только что смотрел на youtube. Это канал резидента Comedy Таира. Показывали нескольких героев, которые благополучно туда переехали. Один работает в facebook, у другого своя игровая студия, третий какой-то мутный advice инвестор, а четвертый инженер из tesla.", color: UIColor.blue, importance: .normal, destructDate: nil))
             model.add(Note(title: "Сериалы", content: "Закончил смотреть Видоизмененный углерод. Довольно интересный. С первых серий заметно затягивает, но потом уже спокойно смотришь и ждешь развязки. Не скажу, что это лучший сериал. Мир дикого запада намного больше зацепил, как по сюжету, так и по музыкальному сопровождению и эффектам.", importance: .normal))
             model.add(Note(title: "Потоки информации", content: "Немного напрягает, что большую часть информации я получаю из каких-либо видео материалов. И если подумать, то это информация пустая, которую ты через 5 мин забудешь и не вспомнишь. Но именно туда ты инвестируешь свое время. На развлечение и картинки. То есть ты как бы являешься пассивной стороной, куда по шлангу закачают информацию. Может стоит начать думать своей головой, записывать свои мысли и больше читать.", importance: .unimportant))
-            model.saveToFile()
+            model.save()
         }
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.title = "Заметки"
-        model = FileNotebook(filename: "myNotes")
+        //FileNotebook(filename: "myNotes")
         self.tableView.register(UINib(nibName: "TableViewCell", bundle: nil), forCellReuseIdentifier: reuseIdentifier)
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(createNewNote))
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Edit", style: .plain, target: self, action: #selector(makeEditable))
@@ -105,13 +113,13 @@ class TableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return model.notes.count
+        return model?.notes.count ?? 0
     }
 
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath) as! TableViewCell
-        let note = model.notes[indexPath.row]
+        let note = model!.notes[indexPath.row]
         cell.colorView.backgroundColor = note.color
         cell.customTitle.text = note.title
         cell.customDescription?.text = note.content
@@ -128,6 +136,7 @@ class TableViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        guard let model = model else { return }
         if editingStyle == .delete {
             let note = model.notes[indexPath.row]
             let remove = RemoveNoteOperation(note: note, notebook: model, backendQueue: backendQueue, dbQueue: dbQueue)
@@ -145,13 +154,14 @@ class TableViewController: UITableViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let vc = segue.destination as? EditNoteViewController, segue.identifier == "editSegue" {
             if let index = sender as? IndexPath {
-                vc.noteToEdit = model.notes[index.row]
+                vc.noteToEdit = model?.notes[index.row]
             }
             vc.completion = returnFromNoteEdit(vc:)
         }
     }
     
     func returnFromNoteEdit(vc: EditNoteViewController) {
+        guard let model = model else { return }
         //условия для новой заметки
         guard let name = vc.noteName.text,
             let content = vc.noteText.text,
@@ -205,6 +215,7 @@ extension TableViewController: AuthViewControllerDelegate {
     
     //Opertaion func
     func loadNotes() {
+        guard let model = model else { return }
         let loadOperation = LoadNotesOperation(notebook: model, backendQueue: backendQueue, dbQueue: dbQueue)
         loadOperation.completionBlock = {
             DispatchQueue.main.async {

@@ -110,7 +110,7 @@ class FileNotebookTests: XCTestCase {
         let note2 = Note(title: "New Title", content: "My new text", color: .red, importance: .important, destructDate: Date())
         sut.add(note2)
         
-        sut.saveToFile()
+        sut.save()
         
         sut.remove(with: note.uid)
         sut.remove(with: note2.uid)
@@ -120,7 +120,7 @@ class FileNotebookTests: XCTestCase {
         let note3 = Note(title: "New Title3", content: "My new text3", color: .green, importance: .unimportant, destructDate: Date())
         sut.add(note3)
         
-        sut.loadFromFile()
+        sut.loadFromStorage()
         
         let notes = sut.notes
         XCTAssertEqual(notes.count, 2)
@@ -135,9 +135,9 @@ class FileNotebookTests: XCTestCase {
         let note2 = Note(title: "New Title", content: "My new text", color: .red, importance: .important, destructDate: Date())
         sut.add(note2)
         
-        sut.saveToFile()
+        sut.save()
         
-        sut.loadFromFile()
+        sut.loadFromStorage()
         
         let notes = sut.notes
         

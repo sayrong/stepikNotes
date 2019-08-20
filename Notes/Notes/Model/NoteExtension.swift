@@ -60,19 +60,9 @@ extension Note {
 			result["selfDestructDate"] = delDate.timeIntervalSince1970
 		}
 		
-		if color != UIColor.white {
-			var colorDict = [String:Double]()
-			var r: CGFloat = 0
-			var g: CGFloat = 0
-			var b: CGFloat = 0
-			var a: CGFloat = 0
-			color.getRed(&r, green: &g, blue: &b, alpha: &a);
-			colorDict["r"] = Double(r)
-			colorDict["g"] = Double(g)
-			colorDict["b"] = Double(b)
-			colorDict["a"] = Double(a)
-			result["color"] = colorDict
-		}
+        if let parsedColor = color.noteColorParse() {
+            result["color"] = parsedColor
+        }
 		
 		if self.importance != .normal {
 			result["importance"] = self.importance.rawValue
@@ -82,3 +72,22 @@ extension Note {
 	
 }
 
+extension UIColor {
+    
+    func noteColorParse() -> [String: Any]? {
+        var colorDict: [String:Double]?
+        if self != UIColor.white {
+            colorDict = [:]
+            var r: CGFloat = 0
+            var g: CGFloat = 0
+            var b: CGFloat = 0
+            var a: CGFloat = 0
+            self.getRed(&r, green: &g, blue: &b, alpha: &a);
+            colorDict!["r"] = Double(r)
+            colorDict!["g"] = Double(g)
+            colorDict!["b"] = Double(b)
+            colorDict!["a"] = Double(a)
+        }
+        return colorDict
+    }
+}
