@@ -81,6 +81,7 @@
 		2CC2431E22DC7A130087296D /* LoginVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LoginVC.xib; sourceTree = "<group>"; };
 		2CC2432222DC7BE50087296D /* HelloVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelloVC.swift; sourceTree = "<group>"; };
 		2CC2432322DC7BE50087296D /* HelloVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = HelloVC.xib; sourceTree = "<group>"; };
+		2CF140AB230D411D00846830 /* Model_for_test.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model_for_test.xcdatamodel; sourceTree = "<group>"; };
 		32662F1322E3441500272417 /* TableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewController.swift; sourceTree = "<group>"; };
 		32662F1722E3449300272417 /* TableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewCell.swift; sourceTree = "<group>"; };
 		32662F1822E3449300272417 /* TableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TableViewCell.xib; sourceTree = "<group>"; };
@@ -823,6 +824,7 @@
 		2C29E6CC230BF5FB00D70F93 /* Model.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				2CF140AB230D411D00846830 /* Model_for_test.xcdatamodel */,
 				2C29E6CD230BF5FB00D70F93 /* Model.xcdatamodel */,
 			);
 			currentVersion = 2C29E6CD230BF5FB00D70F93 /* Model.xcdatamodel */;
