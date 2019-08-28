@@ -28,6 +28,7 @@
 		2CC2432022DC7A130087296D /* LoginVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2CC2431E22DC7A130087296D /* LoginVC.xib */; };
 		2CC2432422DC7BE50087296D /* HelloVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CC2432222DC7BE50087296D /* HelloVC.swift */; };
 		2CC2432522DC7BE50087296D /* HelloVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2CC2432322DC7BE50087296D /* HelloVC.xib */; };
+		2CF79A2D231540EE0060B398 /* AuthViewPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CF79A2C231540EE0060B398 /* AuthViewPresenter.swift */; };
 		3234E80FB5FA6A53B5E1AB19 /* libPods-Notes.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 913E29E430946677250BB24A /* libPods-Notes.a */; };
 		32662F1422E3441500272417 /* TableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32662F1322E3441500272417 /* TableViewController.swift */; };
 		32662F1922E3449300272417 /* TableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32662F1722E3449300272417 /* TableViewCell.swift */; };
@@ -82,6 +83,7 @@
 		2CC2432222DC7BE50087296D /* HelloVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelloVC.swift; sourceTree = "<group>"; };
 		2CC2432322DC7BE50087296D /* HelloVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = HelloVC.xib; sourceTree = "<group>"; };
 		2CF140AB230D411D00846830 /* Model_for_test.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model_for_test.xcdatamodel; sourceTree = "<group>"; };
+		2CF79A2C231540EE0060B398 /* AuthViewPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewPresenter.swift; sourceTree = "<group>"; };
 		32662F1322E3441500272417 /* TableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewController.swift; sourceTree = "<group>"; };
 		32662F1722E3449300272417 /* TableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewCell.swift; sourceTree = "<group>"; };
 		32662F1822E3449300272417 /* TableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TableViewCell.xib; sourceTree = "<group>"; };
@@ -131,6 +133,33 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2C542599231678FF002F9598 /* Note */ = {
+			isa = PBXGroup;
+			children = (
+				32662F1322E3441500272417 /* TableViewController.swift */,
+				32662F1722E3449300272417 /* TableViewCell.swift */,
+				32662F1822E3449300272417 /* TableViewCell.xib */,
+			);
+			path = Note;
+			sourceTree = "<group>";
+		};
+		2C54259A2316795E002F9598 /* Gallery */ = {
+			isa = PBXGroup;
+			children = (
+				3267DC8D22E50125009BEB5C /* ScrollViewController.swift */,
+			);
+			path = Gallery;
+			sourceTree = "<group>";
+		};
+		2C54259B23167FC4002F9598 /* Auth */ = {
+			isa = PBXGroup;
+			children = (
+				2CA3D04A22FC7283006FE5E5 /* AuthViewController.swift */,
+				2CF79A2C231540EE0060B398 /* AuthViewPresenter.swift */,
+			);
+			path = Auth;
+			sourceTree = "<group>";
+		};
 		2C8974E322EEEB9400E9EFDC /* Operations */ = {
 			isa = PBXGroup;
 			children = (
@@ -192,6 +221,16 @@
 			path = Login;
 			sourceTree = "<group>";
 		};
+		2CF79A2B231534CE0060B398 /* Edit note */ = {
+			isa = PBXGroup;
+			children = (
+				6B52070422BFD7D900FE6F38 /* EditNoteViewController.swift */,
+				3267DC8B22E4E24F009BEB5C /* ColorPickerViewController.swift */,
+				2CBBC37322D7753D007486E0 /* ColorPicker.swift */,
+			);
+			path = "Edit note";
+			sourceTree = "<group>";
+		};
 		2F7CF16935B496EDC347902C /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -245,14 +284,10 @@
 			isa = PBXGroup;
 			children = (
 				2C7150BB22EF3C7100F07F0C /* Info.plist */,
-				2CA3D04A22FC7283006FE5E5 /* AuthViewController.swift */,
-				6B52070422BFD7D900FE6F38 /* EditNoteViewController.swift */,
-				32662F1322E3441500272417 /* TableViewController.swift */,
-				32662F1722E3449300272417 /* TableViewCell.swift */,
-				32662F1822E3449300272417 /* TableViewCell.xib */,
-				2CBBC37322D7753D007486E0 /* ColorPicker.swift */,
-				3267DC8B22E4E24F009BEB5C /* ColorPickerViewController.swift */,
-				3267DC8D22E50125009BEB5C /* ScrollViewController.swift */,
+				2C54259B23167FC4002F9598 /* Auth */,
+				2C54259A2316795E002F9598 /* Gallery */,
+				2CF79A2B231534CE0060B398 /* Edit note */,
+				2C542599231678FF002F9598 /* Note */,
 				2CA3D04C22FC84A6006FE5E5 /* Network */,
 				2C8974E322EEEB9400E9EFDC /* Operations */,
 				2CC2432122DC7A190087296D /* Login */,
@@ -480,6 +515,7 @@
 				2C8974F122EEF71200E9EFDC /* SaveNoteDBOperation.swift in Sources */,
 				2CC2432422DC7BE50087296D /* HelloVC.swift in Sources */,
 				2C8974ED22EEF16900E9EFDC /* LoadNotesBackendOperation.swift in Sources */,
+				2CF79A2D231540EE0060B398 /* AuthViewPresenter.swift in Sources */,
 				6B52071522BFD80E00FE6F38 /* Note.swift in Sources */,
 				2C1D151C22FD6D3700B552A5 /* NetworkManager.swift in Sources */,
 				32662F1422E3441500272417 /* TableViewController.swift in Sources */,

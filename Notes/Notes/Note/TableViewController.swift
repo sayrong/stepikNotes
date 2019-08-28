@@ -88,8 +88,7 @@ class TableViewController: UITableViewController {
         //запрашиваем токен
         if first {
             if NetworkManager.shared().token.isEmpty {
-                let requestTokenViewController = AuthViewController()
-                requestTokenViewController.delegate = self
+                let requestTokenViewController = AuthViewController(delegate: self)
                 present(requestTokenViewController, animated: true)
             }
         }
