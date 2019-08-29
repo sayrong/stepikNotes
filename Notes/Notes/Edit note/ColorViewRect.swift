@@ -8,17 +8,10 @@
 
 import UIKit
 
-//При установке цвета одному квадрату, надо снять галки с других
-//Поэтому у каждому квадрата задан owner. Через него можно сборосить цвет остальным
-protocol IColorsController: class {
-    func unselectColors();
-    var selectedColor: UIColor { get set }
-}
-
 //Квадраты выбора цвета
 @IBDesignable class ColorViewRect: UIView {
     
-    weak var owner: IColorsController?
+    weak var owner: EditNoteViewProtocol?
     
     var selected: Bool = false {
         didSet {
@@ -68,8 +61,8 @@ protocol IColorsController: class {
     }
     
     @objc func selectColor() {
-        owner?.unselectColors()
-        owner?.selectedColor = self.backgroundColor ?? UIColor.white
+        let color = self.backgroundColor ?? UIColor.white
+        owner?.colorDidSet(color: color)
         selected = true
     }
 }

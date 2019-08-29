@@ -8,57 +8,145 @@
 
 import UIKit
 
-//Обозначаем, что мы у нас есть owner, с таким аттрибутом.
-//При ухода со страницы мы задаем, чтобы он был равен цвету из нашего контролера.
-protocol selectedColorProtocol: class{
-    var selectedColor: UIColor { get set }
-}
-
 class ColorPickerViewController: UIViewController {
 
-    var selectedColor: UIColor?
-    weak var owner: selectedColorProtocol?
-    //Основная логика прописана во вью. Хотя это не правильно)
-    //Чтобы забрать оттуда цвет, передаем туда комплишон блок.
-    var colorView: ColorPicker?
+    //MARK: Properties
+    weak var owner: EditNoteViewProtocol?
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        configureColorPicker()
-    }
-    
-    private func configureColorPicker() {
-        colorView = ColorPicker(frame: CGRect(x: 0, y: 0, width: self.view.bounds.width, height: self.view.bounds.height))
-        if let colorView = colorView {
-            self.view.addSubview(colorView)
-            colorView.translatesAutoresizingMaskIntoConstraints = false
-            colorView.backgroundColor = UIColor.white
-            colorView.completion = completion(color:)
-            self.view.addSubview(colorView)
-            NSLayoutConstraint.activate([
-                NSLayoutConstraint(item: colorView, attribute: .top, relatedBy: .equal, toItem: self.view, attribute: .top, multiplier: 1, constant: 0),
-                NSLayoutConstraint(item: colorView, attribute: .bottom, relatedBy: .equal, toItem: self.view, attribute: .bottom, multiplier: 1, constant: 0),
-                NSLayoutConstraint(item: colorView, attribute: .leading, relatedBy: .equal, toItem: self.view, attribute: .leading, multiplier: 1, constant: 0),
-                NSLayoutConstraint(item: colorView, attribute: .trailing, relatedBy: .equal, toItem: self.view, attribute: .trailing, multiplier: 1, constant: 0)
-                ])
+    //При измении цвета сразу меняется отображение во view
+    var color: UIColor? {
+        didSet {
+            selectedColorView.colorView.backgroundColor = color
+            selectedColorView.hexColor.text = color?.toHexString()
         }
     }
     
+    //MARK: Creating UI Elements
+    //Элементы и layout сделаны через код, так что на размер frame можно не обращать особого внимания
+    lazy var doneButton: UIButton = {
+        let doneButton = UIButton(type: .system)
+        doneButton.setTitle("Done", for: .normal)
+        doneButton.translatesAutoresizingMaskIntoConstraints = false
+        doneButton.addTarget(self, action: #selector(doneTapped), for: .touchUpInside)
+        return doneButton
+    }()
     
-    private func completion(color: UIColor)->() {
-        self.selectedColor = color
+    lazy var slider: UISlider = {
+        let slider = UISlider(frame: CGRect(x: 0, y: 0, width: 200, height: 30))
+        slider.translatesAutoresizingMaskIntoConstraints = false
+        slider.minimumValue = 0
+        slider.maximumValue = 100
+        slider.addTarget(self, action: #selector(sliderValueChanged), for: .allTouchEvents)
+        return slider
+    }()
+    
+    lazy var brightLabel: UILabel = {
+        let label = UILabel(frame: CGRect(x: 0, y: 0, width: 80, height: 20))
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.text = "Brightness"
+        return label
+    }()
+    
+    //UILongPressGestureRecognizer селектор вызывается каждый раз при движении
+    lazy var colorPickerView: Gradient = {
+        let view = Gradient(frame: CGRect(x: 0, y: 0, width: 20, height: 20))
+        view.backgroundColor = .white
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.layer.borderColor = UIColor.black.cgColor
+        view.layer.borderWidth = 1
+        let recognizer = UILongPressGestureRecognizer()
+        recognizer.minimumPressDuration = 0
+        recognizer.addTarget(self, action: #selector(handlePickColorGesture(_:)))
+        view.addGestureRecognizer(recognizer)
+        return view
+    }()
+    
+    lazy var selectedColorView: SelectedColorView = {
+        let view = SelectedColorView(color: UIColor.white)
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
+    //MARK: Viewlife cycle
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        self.view.addSubview(doneButton)
+        self.view.addSubview(slider)
+        self.view.addSubview(brightLabel)
+        self.view.addSubview(colorPickerView)
+        self.view.addSubview(selectedColorView)
+        setupLayout()
+    }
+    
+    //MARK: Handlers
+    //Обработки, которые мы вызвает через target
+    //Регулировка яркости через слайдер
+    @objc private func sliderValueChanged(sender: UISlider) {
+        var red: CGFloat = 0
+        var green: CGFloat = 0
+        var blue: CGFloat = 0
+        var alpha: CGFloat = 0
+        color?.getRed(&red, green: &green, blue: &blue, alpha: &alpha)
+        let newAlpha = sender.value / 100
+        color = UIColor(red: red, green: green, blue: blue, alpha: CGFloat(newAlpha))
+    }
+    
+    @objc private func handlePickColorGesture(_ gesture: UILongPressGestureRecognizer) {
+        let point = gesture.location(in: colorPickerView)
+        guard colorPickerView.bounds.contains(point) else { return }
+        if colorPickerView.pointer.isHidden { colorPickerView.pointer.isHidden = false }
+        colorPickerView.pointer.center = point
+        let color = getPixelColor(atPosition: point)
+        self.color = color
+        let alph = (CGFloat(self.colorPickerView.bounds.height - point.y) / self.colorPickerView.bounds.height)
+        slider.value = Float(alph) * 100
+    }
+    
+    @objc private func doneTapped() {
+        let color = selectedColorView.colorView.backgroundColor ?? UIColor.white
+        owner?.colorDidSet(color: color)
         self.navigationController?.popViewController(animated: true)
     }
     
-    
-    override func willMove(toParent parent: UIViewController?) {
-        if parent == nil, selectedColor != nil, owner != nil {
-            owner!.selectedColor = selectedColor!
-        }
-        super.willMove(toParent: parent)
+    //Цвет пикселя завит от позиции нашего поинта. Прозрачность от высоты, а цвет от ширины
+    private func getPixelColor(atPosition:CGPoint) -> UIColor{
+        let alph = CGFloat(self.colorPickerView.bounds.height - atPosition.y) / self.colorPickerView.bounds.height
+        let hue = atPosition.x / self.colorPickerView.bounds.width
+        return UIColor(hue: hue, saturation: 1, brightness: 1, alpha: alph)
     }
+    
+    //MARK: Layout
+    //Настройки расположения элементов. Спускаемся сверху вниз
+    private func setupLayout() {
+        NSLayoutConstraint.activate([
+            //
+            NSLayoutConstraint(item: selectedColorView, attribute: .top, relatedBy: .equal, toItem: self.view, attribute: .topMargin, multiplier: 1, constant: 30),
+            NSLayoutConstraint(item: selectedColorView, attribute: .leading, relatedBy: .equal, toItem: self.view, attribute: .leading, multiplier: 1, constant: 20),
+            NSLayoutConstraint(item: selectedColorView, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 80),
+            NSLayoutConstraint(item: selectedColorView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 100),
+            //
+            NSLayoutConstraint(item: brightLabel, attribute: .leading, relatedBy: .equal, toItem: selectedColorView, attribute: .trailing, multiplier: 1, constant: 20),
+            NSLayoutConstraint(item: brightLabel, attribute: .top, relatedBy: .equal, toItem: self.view, attribute: .topMargin, multiplier: 1, constant: 40),
+            NSLayoutConstraint(item: brightLabel, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 120),
+            NSLayoutConstraint(item: brightLabel, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 20),
+            //
+            NSLayoutConstraint(item: slider, attribute: .top, relatedBy: .equal, toItem: brightLabel, attribute: .bottom, multiplier: 1, constant: 40),
+            NSLayoutConstraint(item: slider, attribute: .leading, relatedBy: .equal, toItem: selectedColorView, attribute: .trailing, multiplier: 1, constant: 20),
+            NSLayoutConstraint(item: slider, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 180),
+            NSLayoutConstraint(item: slider, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 20),
+            //
+            NSLayoutConstraint(item: colorPickerView, attribute: .top, relatedBy: .equal, toItem: selectedColorView, attribute: .bottom, multiplier: 1, constant: 30),
+            NSLayoutConstraint(item: colorPickerView, attribute: .leading, relatedBy: .equal, toItem: self.view, attribute: .leadingMargin, multiplier: 1, constant: 20),
+            NSLayoutConstraint(item: colorPickerView, attribute: .trailing, relatedBy: .equal, toItem: self.view, attribute: .trailingMargin, multiplier: 1, constant: -20),
+            //
+            NSLayoutConstraint(item: doneButton, attribute: .top, relatedBy: .equal, toItem: colorPickerView, attribute: .bottom, multiplier: 1, constant: 20),
+            NSLayoutConstraint(item: doneButton, attribute: .centerX, relatedBy: .equal, toItem: self.view, attribute: .centerX, multiplier: 1, constant: 0),
+            NSLayoutConstraint(item: doneButton, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 80),
+            NSLayoutConstraint(item: doneButton, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 20),
+            NSLayoutConstraint(item: doneButton, attribute: .bottom, relatedBy: .equal, toItem: self.view, attribute: .bottomMargin, multiplier: 1, constant: -20),
+            
+            ])
+    }
+    
 
 }

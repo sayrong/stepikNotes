@@ -12,8 +12,8 @@ import CocoaLumberjack
 
 class AuthViewPresenter: NSObject, AuthPresenterProtocol {
     
-    private let clientId = "586d93a13b4a4a7df654"
-    private let clientSecret = "6a736df8d43c7aac352ef1b93378f1b3aab8cda2"
+    private let clientId = ""//"586d93a13b4a4a7df654"
+    private let clientSecret = ""//"6a736df8d43c7aac352ef1b93378f1b3aab8cda2"
     private let scheme = "notes" // схема для callback
     
     private weak var view: AuthViewProtocol?

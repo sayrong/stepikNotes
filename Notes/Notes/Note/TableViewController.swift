@@ -9,6 +9,10 @@
 import UIKit
 import CoreData
 
+protocol TablePresenterProtocol {
+    
+}
+
 class TableViewController: UITableViewController {
 
     var model: NoteStorageProtocol? {
@@ -18,10 +22,7 @@ class TableViewController: UITableViewController {
     }
     
     let reuseIdentifier = "customNotesCell"
-    //очереди для выполнения
-    let dbQueue = OperationQueue()
-    let backendQueue = OperationQueue()
-    let agregateQueue = OperationQueue()
+    
     
     
     //костыль для первого запуска и показа Auth
@@ -58,20 +59,6 @@ class TableViewController: UITableViewController {
         self.agregateQueue.addOperation(remove)
     }
     
-    //пока не используется
-    //просто для заполнения пустой модели
-    private func setupTestingContent(_ model: FileNotebook) {
-        model.loadFromStorage()
-        if model.notes.isEmpty {
-            model.add(Note(uid: UUID().uuidString, title: "Последние задание на курсе iOS начинаем", content: "Было довольно интересно. Но курс определенно не рассчитан на новичков. Больше всего запомнилось задание с ColorPicker. Оно было довольно сложное, но интересное.", color: UIColor.red, importance: .important, destructDate: Date(timeIntervalSinceNow: 60 * 60 * 24 + 1)))
-            model.add(Note(uid: UUID().uuidString, title: "Погода в Москве", content: "В последнее время не переставая льют дожди. Это может быть даже и хорошо, так как особо не тянет на улицу гулять. Можно посвятить время домашних делам.", color: UIColor.white, importance: .normal, destructDate: nil))
-            model.add(Note(uid: UUID().uuidString, title: "Как переехать в Silicon valley", content: "Именно такой ролик я только что смотрел на youtube. Это канал резидента Comedy Таира. Показывали нескольких героев, которые благополучно туда переехали. Один работает в facebook, у другого своя игровая студия, третий какой-то мутный advice инвестор, а четвертый инженер из tesla.", color: UIColor.blue, importance: .normal, destructDate: nil))
-            model.add(Note(title: "Сериалы", content: "Закончил смотреть Видоизмененный углерод. Довольно интересный. С первых серий заметно затягивает, но потом уже спокойно смотришь и ждешь развязки. Не скажу, что это лучший сериал. Мир дикого запада намного больше зацепил, как по сюжету, так и по музыкальному сопровождению и эффектам.", importance: .normal))
-            model.add(Note(title: "Потоки информации", content: "Немного напрягает, что большую часть информации я получаю из каких-либо видео материалов. И если подумать, то это информация пустая, которую ты через 5 мин забудешь и не вспомнишь. Но именно туда ты инвестируешь свое время. На развлечение и картинки. То есть ты как бы являешься пассивной стороной, куда по шлангу закачают информацию. Может стоит начать думать своей головой, записывать свои мысли и больше читать.", importance: .unimportant))
-            model.save()
-        }
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.title = "Заметки"
@@ -84,8 +71,7 @@ class TableViewController: UITableViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        
-        //запрашиваем токен
+
         if first {
             if NetworkManager.shared().token.isEmpty {
                 let requestTokenViewController = AuthViewController(delegate: self)

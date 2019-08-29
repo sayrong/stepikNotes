@@ -8,8 +8,22 @@
 
 import UIKit
 
-class EditNoteViewController: UIViewController, IColorsController, selectedColorProtocol {
+//Архитектура ради архитектуры
+//Так и не нашел логики, которая не связана со view и которую можено вынести в presenter
+protocol EditNotePresenterProtocol: class {
+    var noteName: String { get }
+    var noteText: String { get }
+    var selfDestructDate: Date? { get }
+    var selectedColor: UIColor { get set }
+}
 
+protocol EditNoteViewProtocol: class {
+    func colorDidSet(color: UIColor)
+}
+
+class EditNoteViewController: UIViewController, EditNoteViewProtocol {
+
+    //MARK: IBOutlet
     @IBOutlet weak var colorRect1: ColorViewRect!
     @IBOutlet weak var colorRect2: ColorViewRect!
     @IBOutlet weak var colorRect3: ColorViewRect!
@@ -24,19 +38,21 @@ class EditNoteViewController: UIViewController, IColorsController, selectedColor
     @IBOutlet weak var pickerHidden: NSLayoutConstraint!
     @IBOutlet weak var destroyDateSwitch: UISwitch!
     
-    var selectedColor: UIColor = UIColor.white
-    
+    //MARK: Properties
+    var presenter: EditNotePresenterProtocol!
+    //Не понимаю как передать модель в презентер минуя view
     var noteToEdit: Note?
     var completion:((_ vc: EditNoteViewController)->())?
     
-    //сброс цвета к квадрадах
-    func unselectColors() {
-        colorRect1.selected = false
-        colorRect2.selected = false
-        colorRect3.selected = false
-        colorRect4.selected = false
+    //MARK: Conforms to protocol
+    func colorDidSet(color: UIColor) {
+        unselectColors()
+        presenter.selectedColor = color
     }
     
+    //MARK: Config section
+    //Настраиваем наши квадраты с цветом
+    //Логика настройки UI
     private func configureRect() {
         let tapRect1: UITapGestureRecognizer = UITapGestureRecognizer(target: colorRect1, action: #selector(colorRect1.selectColor))
         let tapRect2: UITapGestureRecognizer = UITapGestureRecognizer(target: colorRect2, action: #selector(colorRect2.selectColor))
@@ -57,33 +73,41 @@ class EditNoteViewController: UIViewController, IColorsController, selectedColor
         colorRect3.backgroundColor = UIColor.green
     }
     
+    //Логика настройки UI - текст и цвет
+    private func configAppearanceAndText() {
+        noteName.text = presenter.noteName
+        noteText.text = presenter.noteText
+        noteText.layer.borderColor = UIColor.black.cgColor
+        noteText.layer.borderWidth = 0.5
+    }
     
-    override func viewDidLoad() {
-		super.viewDidLoad()
-        #if TESTQA
-            //Можно что-то сделать для тестовой сборки
-        #endif
+    //Логика настройки UI - клавиатуры
+    private func configKeyboard() {
         //Тапаем за клавиатуру и она скрывается
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
         view.addGestureRecognizer(tap)
-        if let col = noteToEdit?.color {
-            selectedColor = col
-        }
-        noteName.text = noteToEdit?.title
-        noteText.text = noteToEdit?.content
-        noteText.layer.borderColor = UIColor.black.cgColor
-        noteText.layer.borderWidth = 0.5
-	}
+    }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
+    private func commonConfig() {
         configureRect()
-        if let date = noteToEdit?.selfDestructDate {
+        configKeyboard()
+        configAppearanceAndText()
+    }
+    
+    //MARK: viewWill appear methods
+    //Нет смысла эти методы переносить в presenter
+    //Они вызываеются каждый раз при появлении экрана
+    //Получается какая-то proxy
+    private func configDate() {
+        if let date = presenter.selfDestructDate {
             destroyDateSwitch.isOn = true
             datePicker.isHidden = false
             datePicker.date = date
         }
-        switch selectedColor {
+    }
+    
+    private func configColorRect() {
+        switch presenter.selectedColor {
         case UIColor.white:
             colorRect1.selected = true
         case UIColor.red:
@@ -91,11 +115,46 @@ class EditNoteViewController: UIViewController, IColorsController, selectedColor
         case UIColor.green:
             colorRect3.selected = true
         default:
-            changeColorToGradient()
+            modifyGradientColor()
         }
     }
     
     
+    //MARK: Private methods
+    //Если выбрали кастомный цвет
+    private func modifyGradientColor() {
+        colorRect4.backgroundColor = presenter.selectedColor
+        colorRect4.isGradient = false
+        colorRect4.selected = true
+    }
+    
+    private func unselectColors() {
+        colorRect1.selected = false
+        colorRect2.selected = false
+        colorRect3.selected = false
+        colorRect4.selected = false
+    }
+    
+    //MARK: Life cycle
+    override func viewDidLoad() {
+		super.viewDidLoad()
+        self.presenter = EditNoteViewPresenter(view: self, note: noteToEdit)
+        #if TESTQA
+            //Можно что-то сделать для тестовой сборки
+        #endif
+        commonConfig()
+	}
+    
+    //Каждый раз при появлении экрана
+    //Определяем на каком квадрате ставить галку
+    //И нужно ли выводить datePicker
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        configDate()
+        configColorRect()
+    }
+    
+    //MARK: Navigation to colorPicker
     @objc func showColorPicker(_ sender: UILongPressGestureRecognizer) {
         if sender.state == .ended {
             performSegue(withIdentifier: "colorPickerSegue", sender: self)
@@ -108,21 +167,8 @@ class EditNoteViewController: UIViewController, IColorsController, selectedColor
         }
     }
     
-    //Вызвается при возврата из ColorPicker когда выбран цвет
-    func changeColorToGradient() {
-        colorRect4.backgroundColor = selectedColor
-        colorRect4.isGradient = false
-        unselectColors()
-        colorRect4.selected = true
-    }
-    
-	override func didReceiveMemoryWarning() {
-		super.didReceiveMemoryWarning()
-		// Dispose of any resources that can be recreated.
-	}
-
+    //Прячем клавиатуру
     @objc func dismissKeyboard() {
-        //Causes the view (or one of its embedded text fields) to resign the first responder status.
         view.endEditing(true)
     }
     
@@ -147,6 +193,7 @@ class EditNoteViewController: UIViewController, IColorsController, selectedColor
         super.viewDidLayoutSubviews()
     }
     
+    //При уходе с экрана вызываем completion
     override func willMove(toParent parent: UIViewController?) {
         if let cmp = completion, parent == nil {
             cmp(self)
