@@ -22,8 +22,9 @@ class TableViewController: UITableViewController {
     }
     
     let reuseIdentifier = "customNotesCell"
-    
-    
+    let dbQueue = OperationQueue()
+    let backendQueue = OperationQueue()
+    let agregateQueue = OperationQueue()
     
     //костыль для первого запуска и показа Auth
     private var first = true
